@@ -1,0 +1,5 @@
+{
+  "name": "cu-classes",
+  "private": true,
+  "workspaces": ["packages/*"]
+}
