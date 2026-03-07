@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "import": "tsx --env-file=.env src/cli/import.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",
