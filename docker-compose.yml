@@ -3,8 +3,6 @@ services:
     build:
       context: .
       dockerfile: packages/backend/Dockerfile
-    ports:
-      - "3001:3001"
     environment:
       - MONGODB_URI=${MONGODB_URI}
       - MONGODB_DB=${MONGODB_DB:-classes}
@@ -15,8 +13,6 @@ services:
   structured_outputs:
     build:
       context: ./structured_outputs
-    ports:
-      - "5000:5000"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - BACKEND_URL=http://backend:3001
@@ -29,7 +25,7 @@ services:
       context: .
       dockerfile: packages/frontend/Dockerfile
     ports:
-      - "80:80"
+      - "3211:80"
     depends_on:
       - backend
       - structured_outputs
