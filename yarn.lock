@@ -164,6 +164,7 @@
   version "0.1.0"
   resolved "file:packages/backend"
   dependencies:
+    "@domattheshack/rate-my-professors" "^2.2.1"
     "@hono/node-server" "^1.13.8"
     hono "^4.7.4"
     mongodb "^6.13.1"

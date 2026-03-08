@@ -26,11 +26,11 @@ function SelectField({
 }) {
   return (
     <div className="flex-1 min-w-30">
-      <label className="block text-[10px] font-medium text-gray-500 uppercase tracking-wider mb-1">{label}</label>
+      <label className="block text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{label}</label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full px-2 py-1.5 bg-white border border-gray-200 rounded-md text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-cu-gold/40 focus:border-cu-gold cursor-pointer"
+        className="w-full px-2 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-xs text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-cu-gold/40 focus:border-cu-gold cursor-pointer"
       >
         {options.map(o => (
           <option key={o.value} value={o.value}>
@@ -54,12 +54,12 @@ export default function FilterBar({ departments, filters, onFilterChange }: Prop
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 py-1 transition-colors"
+        className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 py-1 transition-colors"
       >
         {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         Filters
         {Object.values(filters).filter(Boolean).length > 0 && (
-          <span className="ml-1 px-1.5 py-0.5 bg-amber-100 text-cu-gold rounded-full text-[10px] font-medium">
+          <span className="ml-1 px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-cu-gold rounded-full text-[10px] font-medium">
             {Object.values(filters).filter(Boolean).length}
           </span>
         )}

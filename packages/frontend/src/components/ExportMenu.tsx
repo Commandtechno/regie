@@ -26,7 +26,7 @@ export default function ExportMenu({ courses }: Props) {
       <button
         onClick={() => !disabled && setOpen(!open)}
         disabled={disabled}
-        className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         <Download className="w-4 h-4" />
         <span className="hidden sm:inline">Export</span>
@@ -34,20 +34,20 @@ export default function ExportMenu({ courses }: Props) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-lg shadow-xl border border-gray-200 py-1 z-50">
+        <div className="absolute right-0 top-full mt-1 w-52 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-1 z-50">
           <button
             onClick={() => {
               downloadICS(courses);
               setOpen(false);
             }}
-            className="w-full text-left px-3 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2.5 transition-colors"
+            className="w-full text-left px-3 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2.5 transition-colors"
           >
-            <Download className="w-4 h-4 text-gray-400" />
+            <Download className="w-4 h-4 text-gray-400 dark:text-gray-500" />
             Download .ics File
           </button>
-          <div className="border-t border-gray-100 my-0.5" />
+          <div className="border-t border-gray-100 dark:border-gray-700 my-0.5" />
           <div className="px-3 py-2">
-            <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1.5">
+            <p className="text-[10px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1.5">
               Add individual courses to Google Calendar
             </p>
             {courses.map(c => (
@@ -57,7 +57,7 @@ export default function ExportMenu({ courses }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-1 py-1.5 text-xs text-gray-600 hover:text-cu-gold hover:bg-amber-50 rounded transition-colors"
+                className="flex items-center gap-2 px-1 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-cu-gold hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded transition-colors"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 {c.code} ({c.schd} {c.no})

@@ -66,8 +66,8 @@ export default function Sidebar({
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50/70">
-      <div className="p-3 space-y-2 border-b border-gray-200 bg-white/80">
+    <div className="h-full flex flex-col bg-gray-50/70 dark:bg-gray-800/70">
+      <div className="p-3 space-y-2 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80">
         <SearchBar value={query} onChange={setQuery} />
         <FilterBar departments={departments} filters={filters} onFilterChange={updateFilters} />
       </div>
@@ -75,13 +75,13 @@ export default function Sidebar({
       <div className="flex-1 overflow-y-auto">
         <div className="p-3 space-y-2">
           {loading && results.length === 0 && (
-            <div className="flex items-center justify-center py-12 text-gray-400">
+            <div className="flex items-center justify-center py-12 text-gray-400 dark:text-gray-500">
               <Loader2 className="w-5 h-5 animate-spin" />
             </div>
           )}
 
           {!loading && results.length === 0 && (
-            <p className="text-sm text-gray-400 text-center py-12">
+            <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-12">
               {query || Object.values(filters).some(Boolean)
                 ? "No courses found. Try adjusting your search."
                 : "Search for courses to get started."}
@@ -89,7 +89,7 @@ export default function Sidebar({
           )}
 
           {results.length > 0 && (
-            <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider px-1">
+            <div className="text-[10px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider px-1">
               {total.toLocaleString()} results
             </div>
           )}
