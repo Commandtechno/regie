@@ -4,8 +4,6 @@ import type { Course, CourseGroup, Department } from "../types.ts";
 import SearchBar from "./SearchBar.tsx";
 import FilterBar from "./FilterBar.tsx";
 import CourseCard from "./CourseCard.tsx";
-import ScheduleList from "./ScheduleList.tsx";
-import WishlistPanel from "./WishlistPanel.tsx";
 import ConflictDialog from "./ConflictDialog.tsx";
 import Pagination from "./Pagination.tsx";
 import { hasConflict } from "../utils/conflicts.ts";
@@ -24,10 +22,7 @@ interface Props {
   departments: Department[];
   scheduledCourses: Course[];
   wishlist: Course[];
-  totalCredits: number;
   onAddCourse: (course: Course) => void;
-  onRemoveCourse: (crn: string) => void;
-  onReplaceSection: (oldCrn: string, newCourse: Course) => void;
   onAddToWishlist: (course: Course) => void;
   onRemoveFromWishlist: (crn: string) => void;
 }
@@ -46,10 +41,7 @@ export default function Sidebar({
   departments,
   scheduledCourses,
   wishlist,
-  totalCredits,
   onAddCourse,
-  onRemoveCourse,
-  onReplaceSection,
   onAddToWishlist,
   onRemoveFromWishlist
 }: Props) {
@@ -69,15 +61,6 @@ export default function Sidebar({
     }
     // No conflicts — add all
     for (const course of courses) {
-      onAddCourse(course);
-    }
-  };
-
-  const handleWishlistAdd = (course: Course) => {
-    const conflict = hasConflict(course, scheduledCourses);
-    if (conflict) {
-      setConflictState({ courses: [course], conflictWith: conflict });
-    } else {
       onAddCourse(course);
     }
   };
@@ -118,6 +101,7 @@ export default function Sidebar({
               scheduledCourses={scheduledCourses}
               wishlist={wishlist}
               onAdd={courses => handleAdd(courses)}
+              onReplaceSection={undefined}
               onAddToWishlist={course => onAddToWishlist(course)}
               onRemoveFromWishlist={course => onRemoveFromWishlist(course.crn)}
             />
@@ -126,22 +110,7 @@ export default function Sidebar({
           <Pagination page={page} totalPages={totalPages} onPageChange={goToPage} />
         </div>
 
-        <div className="border-t border-gray-200 mx-3" />
 
-        <div className="p-3">
-          <ScheduleList
-            courses={scheduledCourses}
-            totalCredits={totalCredits}
-            onRemove={onRemoveCourse}
-            onReplaceSection={onReplaceSection}
-          />
-        </div>
-
-        <div className="border-t border-gray-200 mx-3" />
-
-        <div className="p-3">
-          <WishlistPanel items={wishlist} onAddToSchedule={handleWishlistAdd} onRemove={onRemoveFromWishlist} />
-        </div>
       </div>
 
       {conflictState && (

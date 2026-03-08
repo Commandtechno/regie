@@ -8,6 +8,7 @@ interface Props {
   scheduledCourses: Course[];
   wishlist: Course[];
   onAdd: (courses: Course[]) => void;
+  onReplaceSection?: (oldCrn: string, newCourse: Course) => void;
   onAddToWishlist: (course: Course) => void;
   onRemoveFromWishlist: (course: Course) => void;
 }
@@ -17,6 +18,7 @@ export default function CourseCard({
   scheduledCourses,
   wishlist,
   onAdd,
+  onReplaceSection,
   onAddToWishlist,
   onRemoveFromWishlist
 }: Props) {
