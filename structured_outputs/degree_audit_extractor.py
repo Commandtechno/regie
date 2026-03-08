@@ -1,38 +1,66 @@
 from google import genai
+from google.genai import types
 from pydantic import BaseModel, Field
 from typing import List, Optional
+import pathlib
+import datetime
 
-class Ingredient(BaseModel):
-    name: str = Field(description="Name of the ingredient.")
-    quantity: str = Field(description="Quantity of the ingredient, including units.")
+class Class(BaseModel):
+    code: str = Field(description="Name code of class. (Ex: MATH2001)")
+    name: str = Field(description="Name of class. (Ex: Introduction to Discrete Mathematics)")
+    prerequisites: List[str] = Field(description="A list of classes that are prerequisites for this class.")
+    credit_hours: int = Field(description="Credit hours for the class.")
 
-class Recipe(BaseModel):
-    recipe_name: str = Field(description="The name of the recipe.")
-    prep_time_minutes: Optional[int] = Field(description="Optional time in minutes to prepare the recipe.")
-    ingredients: List[Ingredient]
-    instructions: List[str]
-
+class ClassList(BaseModel):
+    class_list_name: str = Field(description="The name of the degree or program.")
+    classes: List[Class] = Field(description="A list of classes to reccomend.")
+    thoughts: str = Field(description="Comments describing the reasons for how the list was ordered.")
 
 
 client = genai.Client()
 
-prompt = """
-Please extract the degree audit in the PDF.
+filepath = pathlib.Path('./audits/audit_2026-03-07_17_07_58.0_Sat_Mar_07_17_08_04_MST_2026.pdf')
+
+credit_hours = 17
+
+prompt = f"""
+Please extract the entire degree audit in the PDF.
 The user would like to attend classes which advances their major.
-They will do this by taking courses on their degree audit that they have not completed yet. 
-Return classes the user has not completed that either: 
-- Are on the degree audit
-- Fulfills a prerequisite for a course on the degree audit that the user has not completed
+This means taking mostly classes in the core sections aligning with their major.
+They will do this by taking courses on their degree audit that they have not completed yet.
+Return a list of the classes that fulfill the following:
+- The user has fulfilled the prerequisites
+- Has not been completed
+- Is not 'in progress'
+- On the degree audit for the major
+For electives with multiple choices, prioritize courses based on their history and interests.
+Do not reccomend multiple classes that fulfill the same requirements.
+Prioritize classes that are prerequisites or directly required.
+Important: making sure balance the schedule between core and electives.
 """
+
+st = datetime.datetime.now()
+print("start time: ", st)
 
 response = client.models.generate_content(
     model="gemini-3-flash-preview",
-    contents=prompt,
+    contents=[
+        types.Part.from_bytes(
+            data=filepath.read_bytes(),
+            mime_type='application/pdf',
+        ),
+        prompt,
+    ],
     config={
         "response_mime_type": "application/json",
-        "response_json_schema": Recipe.model_json_schema(),
+        "response_json_schema": ClassList.model_json_schema(),
     },
 )
 
-recipe = Recipe.model_validate_json(response.text)
-print(recipe)
+
+class_list = ClassList.model_validate_json(response.text)
+print(class_list)
+
+et = datetime.datetime.now()
+print("end time: ", et)
+print("elapsed: ", et - st)
