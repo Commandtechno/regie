@@ -1,6 +1,6 @@
 import requests
 from dotenv import load_dotenv
-import json
+from collections import defaultdict
 
 load_dotenv()
 
@@ -27,10 +27,10 @@ def normalize_code(code):
 
 def resolve_courses(codes: list[str]):
     res = requests.post("http://localhost:3001/api/courses/bulk", json=codes).json()
-    courses = {}
+    courses = defaultdict(list)
     for course in res:
-        courses[course["code"]] = course
+        courses[course["code"]].append(course)
     return courses
 
 
-# print(json.dumps(resolve_courses(["Csci2824"]), indent=2))
+# print(json.dumps(resolve_courses(["ARSC 1080"]), indent=2))

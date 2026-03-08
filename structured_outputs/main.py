@@ -3,7 +3,6 @@ from secrets import token_hex
 from flask import Flask, request
 from util import resolve_courses
 
-from typing import list
 
 from parse_audit.audit_to_markdown import parse_audit_json_to_markdown
 from parse_audit.parse_degree_audit import parse_audit_pdf_to_json
@@ -30,24 +29,24 @@ def upload_pdf():
 
     file_id = generate_id()
 
-    pdf_file_name = f"./documents/{id}.pdf"
+    pdf_file_name = f"./documents/{file_id}.pdf"
     pdf.save(pdf_file_name)
 
     pdf_file_path = Path(pdf_file_name)
     json_file_path = Path(
-        parse_audit_pdf_to_json(pdf_file_path), f"./documents/{file_id}.json"
+        parse_audit_pdf_to_json(pdf_file_path, f"./documents/{file_id}.json")
     )
     markdown_file_path = Path(
-        parse_audit_json_to_markdown(json_file_path), f"./documents/{file_id}.md"
+        parse_audit_json_to_markdown(json_file_path, f"./documents/{file_id}.md")
     )
 
     os.remove(pdf_file_name)
     os.remove(json_file_path)
 
-    return file_id
+    return {"id": file_id}
 
 
-@app.route("/ai/getRecommendedCourses", methods=["GET"])
+@app.route("/ai/getRecommendedCourses", methods=["POST"])
 def getRecommendedCourses():
     req_data = request.get_json()
     file_id = req_data["file_id"]
@@ -56,14 +55,26 @@ def getRecommendedCourses():
 
     normalized_codes: dict[str, str] = {}
     for c in json["classes"]:
-        normalized_codes = util.normalize_code(c["code"])
+        normalized_codes[c["code"]] = util.normalize_code(c["code"])
 
     print("course ids: ", normalized_codes.values())
 
     resolved_courses = util.resolve_courses(list(normalized_codes.values()))
-    for course in json["classes"]:
-        course["course"] = resolved_courses[normalized_codes[course["code"]]]
+    new_classes = []
+    for c in json["classes"]:
+        key = normalized_codes[c["code"]]
+        if key in resolved_courses:
+            c["courses"] = resolved_courses[key]
+            new_classes.append(
+                {
+                    "code": c["code"],
+                    "priority": c["priority"],
+                    "prerequisites": c["prerequisites"],
+                    "courses": resolved_courses[key],
+                }
+            )
 
+    json["classes"] = new_classes
     return json
 
 
@@ -76,4 +87,4 @@ def getRecommendedCourses():
 #    return json
 #
 #
-# app.run()
+app.run()

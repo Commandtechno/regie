@@ -20,20 +20,12 @@ type State =
   | { type: "results"; recommendations: Array<{ priority: number; course: Course }> }
   | { type: "error"; message: string };
 
-const priorityColors: Record<number, string> = {
-  1: "bg-red-500",
-  2: "bg-orange-500",
-  3: "bg-yellow-500",
-  4: "bg-emerald-500",
-  5: "bg-blue-500",
-};
-
 export default function AiAdvisor({
   scheduledCourses,
   wishlist,
   onAddCourse,
   onAddToWishlist,
-  onRemoveFromWishlist,
+  onRemoveFromWishlist
 }: Props) {
   const [open, setOpen] = useState(true);
   const [state, setState] = useState<State>({ type: "upload" });
@@ -104,7 +96,7 @@ export default function AiAdvisor({
     department: course.department,
     courseNumber: course.courseNumber,
     credits: course.credits,
-    sections: [course],
+    sections: [course]
   });
 
   return (
@@ -127,13 +119,7 @@ export default function AiAdvisor({
               onClick={() => fileInputRef.current?.click()}
               className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-amber-400 hover:bg-amber-50/30"
             >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf"
-                onChange={handleInputChange}
-                className="hidden"
-              />
+              <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleInputChange} className="hidden" />
               <Upload className="w-5 h-5 text-gray-400 mx-auto mb-2" />
               <p className="text-xs text-gray-600">Upload your degree audit (PDF)</p>
             </div>
@@ -149,10 +135,7 @@ export default function AiAdvisor({
           {state.type === "error" && (
             <div className="p-3 rounded-lg bg-red-50 border border-red-100">
               <p className="text-xs text-red-600 mb-2">{state.message}</p>
-              <button
-                onClick={handleReset}
-                className="text-xs text-gray-600 hover:text-gray-800 underline"
-              >
+              <button onClick={handleReset} className="text-xs text-gray-600 hover:text-gray-800 underline">
                 Try again
               </button>
             </div>
@@ -165,21 +148,17 @@ export default function AiAdvisor({
               ) : (
                 state.recommendations.map(({ priority, course }) => {
                   const group = createCourseGroup(course);
-                  const priorityColor = priorityColors[priority] || "bg-gray-400";
                   return (
                     <div key={course.crn}>
-                      <div className="flex items-center gap-1.5 mb-1 px-1">
-                        <div className={`w-2 h-2 rounded-full ${priorityColor}`} />
-                        <span className="text-[10px] text-gray-500 font-medium">Priority {priority}</span>
-                      </div>
                       <CourseCard
+                        priority={priority}
                         group={group}
                         scheduledCourses={scheduledCourses}
                         wishlist={wishlist}
                         onAdd={handleAiAdd}
                         onReplaceSection={undefined}
                         onAddToWishlist={onAddToWishlist}
-                        onRemoveFromWishlist={(c) => onRemoveFromWishlist(c.crn)}
+                        onRemoveFromWishlist={c => onRemoveFromWishlist(c.crn)}
                       />
                     </div>
                   );

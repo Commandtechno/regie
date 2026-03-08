@@ -17,7 +17,7 @@ class Class(BaseModel):
         description="A list of classes that are prerequisites for this class."
     )
     priority: int = Field(
-        description="Number 1-5 corresponding to how important the class is for the degree."
+        description="Number 1-5 corresponding to how important the class is for the degree with 5 being highest priority."
     )
 
 
@@ -90,4 +90,4 @@ def create_recommended_class_list(file_id):
     return json_data
 
 
-create_recommended_class_list("audit")
+# create_recommended_class_list("audit")

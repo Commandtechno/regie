@@ -25,7 +25,7 @@ export default function LeftPanel({
   onRemoveCourse,
   onReplaceSection,
   onRemoveFromWishlist,
-  onAddToWishlist,
+  onAddToWishlist
 }: Props) {
   const [conflictState, setConflictState] = useState<{
     courses: Course[];
@@ -52,7 +52,7 @@ export default function LeftPanel({
         />
       </div>
 
-      <div className="border-t border-gray-200 mx-3" />
+      {/* <div className="border-t border-gray-200 mx-3" />
 
       <div className="p-3">
         <WishlistPanel
@@ -60,7 +60,7 @@ export default function LeftPanel({
           onAddToSchedule={handleWishlistAdd}
           onRemove={onRemoveFromWishlist}
         />
-      </div>
+      </div> */}
 
       <div className="border-t border-gray-200 mx-3" />
 
