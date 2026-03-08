@@ -33,6 +33,11 @@ export default function App() {
   return (
     <div className="h-screen flex flex-col bg-zinc-100 dark:bg-zinc-900">
       <header className="shrink-0 bg-cu-black text-white px-4 py-3 flex items-center justify-between shadow-lg z-40">
+        <h1>
+          <span className="font-bold">Regie</span>
+          <span className="text-zinc-400 text-[10px] ml-2">for HackCU 12</span>
+        </h1>
+
         <div className="flex items-center gap-3"></div>
 
         <div className="flex items-center gap-2">
