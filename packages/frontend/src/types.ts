@@ -23,7 +23,6 @@ export interface Course {
   courseNumber: string;
   credits: string;
   linked_crns: string;
-  is_enroll_section: string;
 }
 
 export interface CoursesResponse {
