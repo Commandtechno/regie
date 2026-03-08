@@ -24,11 +24,11 @@ export default function ConflictDialog({ courses, conflictWith, onConfirm, onCan
         className={`relative bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 transition-all ${
           closing ? "opacity-0 scale-95" : "opacity-100 scale-100"
         }`}
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <div className="flex items-start gap-3">
           <div className="p-2 bg-amber-50 rounded-full">
-            <AlertTriangle className="w-5 h-5 text-amber-600" />
+            <AlertTriangle className="w-5 h-5 text-cu-gold" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">Schedule Conflict</h3>
@@ -49,7 +49,7 @@ export default function ConflictDialog({ courses, conflictWith, onConfirm, onCan
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-600 transition-colors"
+            className="px-4 py-2 text-sm font-medium text-white bg-cu-gold rounded-lg hover:bg-cu-gold transition-colors"
           >
             Add Anyway
           </button>

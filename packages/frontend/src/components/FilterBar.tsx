@@ -17,7 +17,7 @@ function SelectField({
   label,
   value,
   options,
-  onChange,
+  onChange
 }: {
   label: string;
   value: string;
@@ -25,14 +25,14 @@ function SelectField({
   onChange: (v: string) => void;
 }) {
   return (
-    <div className="flex-1 min-w-[120px]">
+    <div className="flex-1 min-w-30">
       <label className="block text-[10px] font-medium text-gray-500 uppercase tracking-wider mb-1">{label}</label>
       <select
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full px-2 py-1.5 bg-white border border-gray-200 rounded-md text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500 cursor-pointer"
+        onChange={e => onChange(e.target.value)}
+        className="w-full px-2 py-1.5 bg-white border border-gray-200 rounded-md text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-cu-gold/40 focus:border-cu-gold cursor-pointer"
       >
-        {options.map((o) => (
+        {options.map(o => (
           <option key={o.value} value={o.value}>
             {o.label}
           </option>
@@ -47,7 +47,7 @@ export default function FilterBar({ departments, filters, onFilterChange }: Prop
 
   const deptOptions = [
     { value: "", label: "All Depts" },
-    ...departments.map((d) => ({ value: d.code, label: `${d.code} (${d.count})` })),
+    ...departments.map(d => ({ value: d.code, label: `${d.code} (${d.count})` }))
   ];
 
   return (
@@ -59,7 +59,7 @@ export default function FilterBar({ departments, filters, onFilterChange }: Prop
         {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         Filters
         {Object.values(filters).filter(Boolean).length > 0 && (
-          <span className="ml-1 px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-full text-[10px] font-medium">
+          <span className="ml-1 px-1.5 py-0.5 bg-amber-100 text-cu-gold rounded-full text-[10px] font-medium">
             {Object.values(filters).filter(Boolean).length}
           </span>
         )}
@@ -71,35 +71,35 @@ export default function FilterBar({ departments, filters, onFilterChange }: Prop
             label="Department"
             value={filters.department || ""}
             options={deptOptions}
-            onChange={(v) => onFilterChange({ department: v || undefined })}
+            onChange={v => onFilterChange({ department: v || undefined })}
           />
           <SelectField
             label="Level"
             value={filters.level || ""}
-            options={LEVELS.map((l) => ({ value: l, label: l || "All Levels" }))}
-            onChange={(v) => onFilterChange({ level: v || undefined })}
+            options={LEVELS.map(l => ({ value: l, label: l || "All Levels" }))}
+            onChange={v => onFilterChange({ level: v || undefined })}
           />
           <SelectField
             label="Type"
             value={filters.schd || ""}
-            options={TYPES.map((t) => ({ value: t, label: t || "All Types" }))}
-            onChange={(v) => onFilterChange({ schd: v || undefined })}
+            options={TYPES.map(t => ({ value: t, label: t || "All Types" }))}
+            onChange={v => onFilterChange({ schd: v || undefined })}
           />
           <SelectField
             label="Career"
             value={filters.career || ""}
-            options={CAREERS.map((c) => ({ value: c, label: c || "All" }))}
-            onChange={(v) => onFilterChange({ career: v || undefined })}
+            options={CAREERS.map(c => ({ value: c, label: c || "All" }))}
+            onChange={v => onFilterChange({ career: v || undefined })}
           />
-          <SelectField
+          {/* <SelectField
             label="Status"
             value={filters.status || ""}
-            options={STATUSES.map((s) => ({
+            options={STATUSES.map(s => ({
               value: s,
-              label: s === "A" ? "Available" : s === "F" ? "Full" : "All",
+              label: s === "A" ? "Available" : s === "F" ? "Full" : "All"
             }))}
-            onChange={(v) => onFilterChange({ status: v || undefined })}
-          />
+            onChange={v => onFilterChange({ status: v || undefined })}
+          /> */}
         </div>
       )}
     </div>

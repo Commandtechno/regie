@@ -9,7 +9,7 @@ import {
   topOffset,
   blockHeight,
   currentTimeOffset,
-  currentDayIndex,
+  currentDayIndex
 } from "../utils/calendar.ts";
 import CalendarBlock from "./CalendarBlock.tsx";
 
@@ -73,7 +73,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
       1: [],
       2: [],
       3: [],
-      4: [],
+      4: []
     };
 
     for (let day = 0; day < 5; day++) {
@@ -126,7 +126,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
           <div
             key={i}
             className={`flex-1 text-center py-2.5 text-xs font-semibold tracking-wide uppercase ${
-              dayIdx === i ? "text-amber-700 bg-amber-50/60" : "text-gray-500"
+              dayIdx === i ? "text-cu-gold bg-amber-50/60" : "text-gray-500"
             }`}
           >
             <span className="hidden sm:inline">{label}</span>
@@ -138,7 +138,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
       <div className="flex-1 overflow-y-auto">
         <div className="flex relative" style={{ height: totalHeight }}>
           <div className="w-16 shrink-0 relative">
-            {hours.map((h) => (
+            {hours.map(h => (
               <div
                 key={h}
                 className="absolute right-2 text-[10px] text-gray-400 leading-none"
@@ -150,19 +150,19 @@ export default function Calendar({ courses, onCourseClick }: Props) {
           </div>
 
           <div className="flex-1 flex relative">
-            {[0, 1, 2, 3, 4].map((day) => (
+            {[0, 1, 2, 3, 4].map(day => (
               <div
                 key={day}
                 className={`flex-1 relative border-l border-gray-100 ${dayIdx === day ? "bg-amber-50/30" : ""}`}
               >
-                {hours.map((h) => (
+                {hours.map(h => (
                   <div
                     key={h}
                     className="absolute left-0 right-0 border-t border-gray-100"
                     style={{ top: (h - START_HOUR) * 2 * ROW_HEIGHT }}
                   />
                 ))}
-                {hours.map((h) => (
+                {hours.map(h => (
                   <div
                     key={`${h}-half`}
                     className="absolute left-0 right-0 border-t border-gray-50"
@@ -183,7 +183,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
                         height: block.height,
                         left: `${leftPct}%`,
                         width: `${widthPct}%`,
-                        position: "absolute",
+                        position: "absolute"
                       }}
                       onClick={() => onCourseClick(block.course)}
                     />
@@ -193,10 +193,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
             ))}
 
             {timeOffset !== null && dayIdx !== null && (
-              <div
-                className="absolute left-0 right-0 z-30 pointer-events-none"
-                style={{ top: timeOffset }}
-              >
+              <div className="absolute left-0 right-0 z-30 pointer-events-none" style={{ top: timeOffset }}>
                 <div className="h-0.5 bg-red-500 relative">
                   <div className="absolute -left-1 -top-1 w-2.5 h-2.5 bg-red-500 rounded-full" />
                 </div>

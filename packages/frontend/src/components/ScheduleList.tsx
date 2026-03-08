@@ -31,7 +31,7 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
         className="w-full flex items-center justify-between py-2 text-sm font-semibold text-gray-700"
       >
         <span className="flex items-center gap-2">
-          <GraduationCap className="w-4 h-4 text-amber-600" />
+          <GraduationCap className="w-4 h-4 text-cu-gold" />
           My Schedule ({courses.length})
         </span>
         {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -59,7 +59,7 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
               </div>
               <button
                 onClick={() => setSectionPickerCourse(course)}
-                className="p-1 text-gray-500 hover:text-amber-700 hover:bg-white/60 rounded transition-colors"
+                className="p-1 text-gray-500 hover:text-cu-gold hover:bg-white/60 rounded transition-colors"
                 title="Change section"
               >
                 <ArrowLeftRight className="w-3.5 h-3.5" />
@@ -84,7 +84,7 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
       {sectionPickerCourse && (
         <SectionPicker
           course={sectionPickerCourse}
-          onSelect={(newCourse) => {
+          onSelect={newCourse => {
             onReplaceSection(sectionPickerCourse.crn, newCourse);
             setSectionPickerCourse(null);
           }}

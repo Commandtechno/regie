@@ -45,6 +45,7 @@ export default function AiAdvisor({
       const sorted = recommendations.sort((a, b) => a.priority - b.priority);
       setState({ type: "results", recommendations: sorted });
     } catch (e) {
+      console.error(e);
       setState({ type: "error", message: e instanceof Error ? e.message : "Failed to analyze PDF" });
     }
   }, []);
@@ -98,7 +99,7 @@ export default function AiAdvisor({
       department: first.department,
       courseNumber: first.courseNumber,
       credits: first.credits,
-      sections: courses,
+      sections: courses
     };
   };
 
@@ -109,7 +110,7 @@ export default function AiAdvisor({
         className="w-full flex items-center justify-between py-2 text-sm font-semibold text-gray-700"
       >
         <span className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-amber-500" />
+          <Sparkles className="w-4 h-4 text-cu-gold" />
           AI Advisor
         </span>
         {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -120,7 +121,7 @@ export default function AiAdvisor({
           {state.type === "upload" && (
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-amber-400 hover:bg-amber-50/30"
+              className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-cu-gold hover:bg-amber-50/30"
             >
               <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleInputChange} className="hidden" />
               <Upload className="w-5 h-5 text-gray-400 mx-auto mb-2" />
@@ -149,10 +150,10 @@ export default function AiAdvisor({
               {state.recommendations.length === 0 ? (
                 <p className="text-xs text-gray-400 py-3 text-center">No recommendations found.</p>
               ) : (
-                state.recommendations.map(({ priority, course }) => {
-                  const group = createCourseGroup(course);
+                state.recommendations.map(({ priority, courses }) => {
+                  const group = createCourseGroup(courses);
                   return (
-                    <div key={course.crn}>
+                    <div key={courses[0].crn}>
                       <CourseCard
                         priority={priority}
                         group={group}

@@ -20,16 +20,8 @@ export default function App() {
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
-      <header className="shrink-0 bg-gray-900 text-white px-4 py-3 flex items-center justify-between shadow-lg z-40">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center font-bold text-sm text-gray-900">
-            CU
-          </div>
-          <div>
-            <h1 className="text-sm font-bold tracking-tight leading-none">CU Boulder</h1>
-            <p className="text-[10px] text-gray-400 leading-none mt-0.5">Course Scheduler</p>
-          </div>
-        </div>
+      <header className="shrink-0 bg-cu-black text-white px-4 py-3 flex items-center justify-between shadow-lg z-40">
+        <div className="flex items-center gap-3"></div>
 
         <div className="flex items-center gap-2">
           <button
@@ -53,7 +45,7 @@ export default function App() {
         {/* Left panel: schedule + wishlist */}
         <div
           className={`
-            w-[360px] shrink-0 border-r border-gray-200 bg-gray-50 overflow-hidden
+            w-90 shrink-0 border-r border-gray-200 bg-gray-50 overflow-hidden
             max-lg:absolute max-lg:inset-y-0 max-lg:left-0 max-lg:z-30 max-lg:shadow-2xl
             max-lg:transition-transform max-lg:duration-300
             ${leftPanelOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full"}
@@ -79,7 +71,7 @@ export default function App() {
         {/* Right panel: search */}
         <div
           className={`
-            w-[360px] shrink-0 border-l border-gray-200 bg-gray-50 overflow-hidden
+            w-90 shrink-0 border-l border-gray-200 bg-gray-50 overflow-hidden
             max-lg:absolute max-lg:inset-y-0 max-lg:right-0 max-lg:z-30 max-lg:shadow-2xl
             max-lg:transition-transform max-lg:duration-300
             ${sidebarOpen ? "max-lg:translate-x-0" : "max-lg:translate-x-full"}

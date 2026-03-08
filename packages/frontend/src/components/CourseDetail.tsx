@@ -16,7 +16,7 @@ export default function CourseDetail({ course, onClose }: Props) {
     if (!course.instr || course.instr === "TBA" || course.instr === "Staff") return;
     setRatingLoading(true);
     getProfessorRating(course.instr)
-      .then((r) => setRating(r))
+      .then(r => setRating(r))
       .catch(() => {})
       .finally(() => setRatingLoading(false));
   }, [course.instr]);
@@ -26,7 +26,7 @@ export default function CourseDetail({ course, onClose }: Props) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
         className="relative bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-white border-b border-gray-100 px-5 py-4 flex items-start justify-between rounded-t-xl">
           <div>
@@ -56,9 +56,7 @@ export default function CourseDetail({ course, onClose }: Props) {
 
           {course.instr && course.instr !== "TBA" && course.instr !== "Staff" && (
             <div className="border-t border-gray-100 pt-4">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
-                RateMyProfessor
-              </h3>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">RateMyProfessor</h3>
               {ratingLoading && (
                 <div className="flex items-center gap-2 text-sm text-gray-400">
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -69,7 +67,7 @@ export default function CourseDetail({ course, onClose }: Props) {
                 <div className="bg-gray-50 rounded-lg p-3 space-y-2">
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                      <Star className="w-4 h-4 text-cu-gold fill-cu-gold" />
                       <span className="font-bold text-lg text-gray-900">{rating.avgRating.toFixed(1)}</span>
                       <span className="text-xs text-gray-500">/5</span>
                     </div>
@@ -85,15 +83,13 @@ export default function CourseDetail({ course, onClose }: Props) {
                     href={rating.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700"
+                    className="inline-flex items-center gap-1 text-xs text-cu-gold hover:text-cu-gold"
                   >
                     View on RMP <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
               )}
-              {!ratingLoading && !rating && (
-                <p className="text-sm text-gray-400">No rating found</p>
-              )}
+              {!ratingLoading && !rating && <p className="text-sm text-gray-400">No rating found</p>}
             </div>
           )}
         </div>
@@ -102,15 +98,7 @@ export default function CourseDetail({ course, onClose }: Props) {
   );
 }
 
-function Detail({
-  label,
-  value,
-  valueClass = "text-gray-900",
-}: {
-  label: string;
-  value: string;
-  valueClass?: string;
-}) {
+function Detail({ label, value, valueClass = "text-gray-900" }: { label: string; value: string; valueClass?: string }) {
   return (
     <div>
       <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">{label}</p>

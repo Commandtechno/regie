@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { Plus, Heart, ChevronDown } from "lucide-react";
+import { Plus, Heart, ChevronDown, Check } from "lucide-react";
 import type { Course, CourseGroup } from "../types.ts";
 import { hasConflict } from "../utils/conflicts.ts";
 
@@ -12,7 +12,7 @@ const priorityColors: Record<number, string> = {
 };
 
 interface Props {
-  priority: number;
+  priority?: number;
   group: CourseGroup;
   scheduledCourses: Course[];
   wishlist: Course[];
@@ -304,14 +304,12 @@ export default function CourseCard({
 
   return (
     <div
-      className={`p-3 bg-white rounded-lg border border-gray-150 transition-all hover:shadow-sm ${
-        hasConflict_ ? "opacity-60" : ""
-      } ${isScheduled ? "ring-2 ring-amber-400/50" : ""}`}
+      className={`p-3 bg-white rounded-lg shadow-sm transition-all hover:shadow-lg ${hasConflict_ ? "opacity-60" : ""}`}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${priorityColors[priority]}`} />
+            {priority && <span className={`w-2 h-2 rounded-full ${priorityColors[priority]}`} />}
             <p className="font-semibold text-sm text-gray-900 truncate">{group.code}</p>
           </div>
           <p className="text-xs text-gray-600 mt-0.5 truncate">{group.title}</p>
@@ -359,8 +357,6 @@ export default function CourseCard({
         )
       )}
 
-      {selectedPrimary?.credits && <div className="mt-1 text-[11px] text-gray-500">{selectedPrimary.credits} cr</div>}
-
       {primaryConflict && (
         <p className="mt-1.5 text-[11px] text-red-600 font-medium">Conflicts with {primaryConflict.code}</p>
       )}
@@ -370,19 +366,27 @@ export default function CourseCard({
         </p>
       )}
 
-      <div className="mt-2 flex items-center gap-1.5">
+      <div className="mt-4 flex items-center gap-1.5 justify-between">
         {!isScheduled && (
           <button
             onClick={handleAdd}
             disabled={hasLinkedSections && hasLinkedDependents && !selectedDependent}
-            className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium rounded-md bg-cu-gold text-white hover:bg-amber-600 active:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium rounded-md bg-cu-gold text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="w-3 h-3" />
             Add
           </button>
         )}
-        {isScheduled && <span className="text-[11px] text-amber-700 font-medium px-2.5 py-1">Scheduled</span>}
-        {!isWishlisted && !isScheduled && (
+        {isScheduled && (
+          <span className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium rounded-md bg-cu-gold text-white opacity-50 cursor-not-allowed ">
+            <Check className="w-3 h-3" />
+            Scheduled
+          </span>
+        )}
+        {selectedPrimary?.credits && (
+          <span className="text-[11px] text-gray-500">{selectedPrimary.credits} credits</span>
+        )}
+        {/* {!isWishlisted && !isScheduled && (
           <button
             onClick={() => onAddToWishlist(selectedPrimary)}
             className="flex items-center gap-1 px-2 py-1 text-[11px] text-gray-500 hover:text-rose-500 rounded-md hover:bg-rose-50 transition-colors"
@@ -397,7 +401,7 @@ export default function CourseCard({
           >
             <Heart className="w-3 h-3 fill-current" />
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );

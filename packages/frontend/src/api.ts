@@ -83,9 +83,9 @@ export async function getRecommendedCourses(fileId: string): Promise<AiRecommend
   // Map 'name' to 'title' if needed
   return data.classes.map((item: any) => ({
     priority: item.priority,
-    course: {
-      ...item.course,
-      title: item.course.title || item.course.name || ""
-    }
+    courses: item.courses.map((course: any) => ({
+      ...course,
+      title: course.title || course.name || ""
+    }))
   }));
 }

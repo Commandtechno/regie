@@ -31,7 +31,7 @@ export default function WishlistPanel({ items, onAddToSchedule, onRemove }: Prop
               No wishlisted courses. Click the heart icon on a course to save it here.
             </p>
           )}
-          {items.map((course) => (
+          {items.map(course => (
             <div
               key={course.crn}
               className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-rose-50/50 border border-rose-100"
@@ -42,7 +42,7 @@ export default function WishlistPanel({ items, onAddToSchedule, onRemove }: Prop
               </div>
               <button
                 onClick={() => onAddToSchedule(course)}
-                className="p-1 text-gray-500 hover:text-amber-700 hover:bg-white/60 rounded transition-colors"
+                className="p-1 text-gray-500 hover:text-cu-gold hover:bg-white/60 rounded transition-colors"
                 title="Add to schedule"
               >
                 <Plus className="w-3.5 h-3.5" />

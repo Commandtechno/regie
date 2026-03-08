@@ -50,14 +50,14 @@ export default function ExportMenu({ courses }: Props) {
             <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1.5">
               Add individual courses to Google Calendar
             </p>
-            {courses.map((c) => (
+            {courses.map(c => (
               <a
                 key={c.crn}
                 href={googleCalendarUrl(c)}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-1 py-1.5 text-xs text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded transition-colors"
+                className="flex items-center gap-2 px-1 py-1.5 text-xs text-gray-600 hover:text-cu-gold hover:bg-amber-50 rounded transition-colors"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 {c.code} ({c.schd} {c.no})
