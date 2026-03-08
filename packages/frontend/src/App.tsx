@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, GraduationCap, Sun, Moon, MapIcon } from "lucide-react";
+import { Menu, X, GraduationCap, Sun, Moon, MapIcon, Search } from "lucide-react";
 import Calendar from "./components/Calendar.tsx";
 import Sidebar from "./components/Sidebar.tsx";
 import LeftPanel from "./components/LeftPanel.tsx";
@@ -43,13 +43,13 @@ export default function App() {
           >
             <GraduationCap className="w-5 h-5" />
           </button>
-          <button
+          {/* <button
             onClick={() => setMapOpen(!mapOpen)}
             className={`p-2 transition-colors rounded-lg cursor-pointer ${mapOpen ? "text-white bg-zinc-800" : "text-gray-400 hover:text-white hover:bg-zinc-800"}`}
             title="Toggle dark mode"
           >
             <MapIcon className="w-5 h-5" />
-          </button>
+          </button> */}
           <button
             onClick={toggle}
             className="p-2 cursor-pointer text-gray-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors"
@@ -62,7 +62,7 @@ export default function App() {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="lg:hidden p-2 text-gray-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors"
           >
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <Search className="w-5 h-5" />
           </button>
         </div>
       </header>
