@@ -87,3 +87,20 @@ export interface CacheEntry<T> {
   data: T;
   expiry: number;
 }
+
+export interface CourseGroup {
+  code: string;
+  title: string;
+  department: string;
+  courseNumber: string;
+  credits: string;
+  sections: Course[];
+}
+
+export interface GroupedCoursesResponse {
+  results: CourseGroup[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}

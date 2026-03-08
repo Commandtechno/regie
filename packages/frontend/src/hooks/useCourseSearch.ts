@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { searchCourses } from "../api.ts";
-import type { Course, SearchParams } from "../types.ts";
+import { searchCoursesGrouped } from "../api.ts";
+import type { CourseGroup, SearchParams } from "../types.ts";
 
 export function useCourseSearch() {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<Omit<SearchParams, "q" | "page" | "limit">>({});
-  const [results, setResults] = useState<Course[]>([]);
+  const [results, setResults] = useState<CourseGroup[]>([]);
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -14,7 +14,7 @@ export function useCourseSearch() {
   const abortRef = useRef<AbortController | null>(null);
 
   const doSearch = useCallback(
-    async (q: string, f: typeof filters, p: number, append: boolean) => {
+    async (q: string, f: typeof filters, p: number) => {
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
@@ -24,14 +24,10 @@ export function useCourseSearch() {
         const params: SearchParams = { ...f, page: p, limit: 25 };
         if (q.trim()) params.q = q.trim();
 
-        const data = await searchCourses(params);
+        const data = await searchCoursesGrouped(params);
         if (controller.signal.aborted) return;
 
-        if (append) {
-          setResults((prev) => [...prev, ...data.results]);
-        } else {
-          setResults(data.results);
-        }
+        setResults(data.results);
         setTotal(data.total);
         setTotalPages(data.totalPages);
         setPage(data.page);
@@ -49,18 +45,21 @@ export function useCourseSearch() {
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      doSearch(query, filters, 1, false);
+      doSearch(query, filters, 1);
     }, 300);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [query, filters, doSearch]);
 
-  const loadMore = useCallback(() => {
-    if (page < totalPages && !loading) {
-      doSearch(query, filters, page + 1, true);
-    }
-  }, [page, totalPages, loading, query, filters, doSearch]);
+  const goToPage = useCallback(
+    (p: number) => {
+      if (p >= 1 && p <= totalPages && !loading) {
+        doSearch(query, filters, p);
+      }
+    },
+    [totalPages, loading, query, filters, doSearch]
+  );
 
   const updateFilters = useCallback((newFilters: Partial<typeof filters>) => {
     setFilters((prev) => {
@@ -86,6 +85,6 @@ export function useCourseSearch() {
     total,
     page,
     totalPages,
-    loadMore,
+    goToPage,
   };
 }
