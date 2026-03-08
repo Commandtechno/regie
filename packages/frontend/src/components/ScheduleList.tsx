@@ -60,14 +60,14 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
               </div>
               <button
                 onClick={() => setSectionPickerCourse(course)}
-                className="p-1 text-gray-500 dark:text-gray-400 hover:text-cu-gold hover:bg-white/60 dark:hover:bg-gray-700/60 rounded transition-colors"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-cu-gold hover:bg-white/60 dark:hover:bg-zinc-700/60 rounded transition-colors"
                 title="Change section"
               >
                 <ArrowLeftRight className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => handleRemove(course.crn)}
-                className="p-1 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-white/60 dark:hover:bg-gray-700/60 rounded transition-colors"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-white/60 dark:hover:bg-zinc-700/60 rounded transition-colors"
                 title="Remove"
               >
                 <X className="w-3.5 h-3.5" />

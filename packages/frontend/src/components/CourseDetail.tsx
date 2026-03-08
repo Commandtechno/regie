@@ -25,15 +25,18 @@ export default function CourseDetail({ course, onClose }: Props) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
-        className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        className="relative bg-white dark:bg-zinc-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 px-5 py-4 flex items-start justify-between rounded-t-xl">
+        <div className="sticky top-0 bg-white dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700 px-5 py-4 flex items-start justify-between rounded-t-xl">
           <div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">{course.code}</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400">{course.title}</p>
           </div>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+          <button
+            onClick={onClose}
+            className="p-1 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
+          >
             <X className="w-5 h-5 text-gray-400" />
           </button>
         </div>
@@ -55,8 +58,10 @@ export default function CourseDetail({ course, onClose }: Props) {
           </div>
 
           {course.instr && course.instr !== "TBA" && course.instr !== "Staff" && (
-            <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">RateMyProfessor</h3>
+            <div className="border-t border-gray-100 dark:border-zinc-700 pt-4">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">
+                RateMyProfessor
+              </h3>
               {ratingLoading && (
                 <div className="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -64,11 +69,13 @@ export default function CourseDetail({ course, onClose }: Props) {
                 </div>
               )}
               {!ratingLoading && rating && (
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 space-y-2">
+                <div className="bg-gray-50 dark:bg-zinc-700 rounded-lg p-3 space-y-2">
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 text-cu-gold fill-cu-gold" />
-                      <span className="font-bold text-lg text-gray-900 dark:text-gray-100">{rating.avgRating.toFixed(1)}</span>
+                      <span className="font-bold text-lg text-gray-900 dark:text-gray-100">
+                        {rating.avgRating.toFixed(1)}
+                      </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">/5</span>
                     </div>
                     <span className="text-xs text-gray-500 dark:text-gray-400">{rating.numRatings} ratings</span>

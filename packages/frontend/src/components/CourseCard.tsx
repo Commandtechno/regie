@@ -231,7 +231,7 @@ export default function CourseCard({
       // Single section - just display inline
       return (
         <div className="mt-2">
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-500 dark:text-gray-400 px-2 py-1.5 bg-gray-50 dark:bg-gray-700/50 rounded-md border border-gray-200 dark:border-gray-600">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-500 dark:text-gray-400 px-2 py-1.5 bg-gray-50 dark:bg-zinc-700/50 rounded-md border border-gray-200 dark:border-zinc-600">
             <span>
               {selected.schd} {selected.no}
             </span>
@@ -247,7 +247,7 @@ export default function CourseCard({
         <button
           disabled={disabled}
           onClick={() => !disabled && setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between gap-2 px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50 not-disabled:hover:bg-gray-100 dark:not-disabled:hover:bg-gray-600 rounded-md border border-gray-200 dark:border-gray-600 transition-colors disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-between gap-2 px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-zinc-700/50 not-disabled:hover:bg-gray-100 dark:not-disabled:hover:bg-zinc-600 rounded-md border border-gray-200 dark:border-zinc-600 transition-colors disabled:cursor-not-allowed"
         >
           <span className="truncate">
             {selected.schd} {selected.no} · {selected.meets || "TBA"} · {selected.instr || "TBA"}
@@ -256,7 +256,7 @@ export default function CourseCard({
         </button>
 
         {isOpen && (
-          <div className="absolute z-10 left-0 right-0 mt-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg max-h-50 overflow-y-auto">
+          <div className="absolute z-10 left-0 right-0 mt-1 text-gray-600 dark:text-gray-300 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 shadow-lg max-h-50 overflow-y-auto">
             {sortedSections.map((section, idx) => {
               const isSelected = section.crn === selected.crn;
               const isAvailable = section.stat === "A";
@@ -266,7 +266,7 @@ export default function CourseCard({
                   key={section.crn}
                   onClick={() => onSelect(idx)}
                   className={`w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[11px] transition-colors ${
-                    isSelected ? "bg-amber-50 dark:bg-amber-900/30" : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                    isSelected ? "bg-amber-50 dark:bg-amber-900/30" : "hover:bg-gray-50 dark:hover:bg-zinc-700"
                   } ${!isAvailable ? "opacity-50" : ""}`}
                 >
                   <div className="min-w-0 flex-1">
@@ -274,7 +274,7 @@ export default function CourseCard({
                       <span className="font-medium">
                         {section.schd} {section.no}
                       </span>
-                      <span className="text-gray-400 dark:text-gray-500">·</span>
+                      <span>·</span>
                       <span className="truncate">{section.meets || "TBA"}</span>
                     </div>
                     <div className="text-gray-500 dark:text-gray-400 mt-0.5">{section.instr || "TBA"}</div>
@@ -306,7 +306,7 @@ export default function CourseCard({
 
   return (
     <div
-      className={`p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg ${hasConflict_ ? "opacity-60" : ""}`}
+      className={`p-3 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 transition-all hover:shadow-lg`}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
@@ -363,7 +363,9 @@ export default function CourseCard({
       )}
 
       {primaryConflict && (
-        <p className="mt-1.5 text-[11px] text-red-600 dark:text-red-400 font-medium">Conflicts with {primaryConflict.code}</p>
+        <p className="mt-1.5 text-[11px] text-red-600 dark:text-red-400 font-medium">
+          Conflicts with {primaryConflict.code}
+        </p>
       )}
       {!primaryConflict && dependentConflict && (
         <p className="mt-1.5 text-[11px] text-red-600 dark:text-red-400 font-medium">

@@ -26,11 +26,13 @@ function SelectField({
 }) {
   return (
     <div className="flex-1 min-w-30">
-      <label className="block text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{label}</label>
+      <label className="block text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+        {label}
+      </label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full px-2 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-xs text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-cu-gold/40 focus:border-cu-gold cursor-pointer"
+        className="w-full px-2 py-1.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-md text-xs text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-cu-gold/40 focus:border-cu-gold cursor-pointer"
       >
         {options.map(o => (
           <option key={o.value} value={o.value}>

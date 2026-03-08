@@ -121,7 +121,7 @@ export default function AiAdvisor({
           {state.type === "upload" && (
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-cu-gold hover:bg-amber-50/30 dark:hover:bg-amber-900/20"
+              className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-cu-gold hover:bg-amber-50/30 dark:hover:bg-amber-900/20"
             >
               <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleInputChange} className="hidden" />
               <Upload className="w-5 h-5 text-gray-400 dark:text-gray-500 mx-auto mb-2" />
@@ -139,7 +139,10 @@ export default function AiAdvisor({
           {state.type === "error" && (
             <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800">
               <p className="text-xs text-red-600 dark:text-red-400 mb-2">{state.message}</p>
-              <button onClick={handleReset} className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 underline">
+              <button
+                onClick={handleReset}
+                className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 underline"
+              >
                 Try again
               </button>
             </div>

@@ -21,7 +21,7 @@ export default function App() {
   const [leftPanelOpen, setLeftPanelOpen] = useState(false);
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
+    <div className="h-screen flex flex-col bg-gray-100 dark:bg-zinc-900">
       <header className="shrink-0 bg-cu-black text-white px-4 py-3 flex items-center justify-between shadow-lg z-40">
         <div className="flex items-center gap-3"></div>
 
@@ -54,7 +54,7 @@ export default function App() {
         {/* Left panel: schedule + wishlist */}
         <div
           className={`
-            w-90 shrink-0 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/70 overflow-hidden
+            w-90 shrink-0 border-r border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/70 overflow-hidden
             max-lg:absolute max-lg:inset-y-0 max-lg:left-0 max-lg:z-30 max-lg:shadow-2xl
             max-lg:transition-transform max-lg:duration-300
             ${leftPanelOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full"}
@@ -80,7 +80,7 @@ export default function App() {
         {/* Right panel: search */}
         <div
           className={`
-            w-90 shrink-0 border-l border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/70 overflow-hidden
+            w-90 shrink-0 border-l border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800/70 overflow-hidden
             max-lg:absolute max-lg:inset-y-0 max-lg:right-0 max-lg:z-30 max-lg:shadow-2xl
             max-lg:transition-transform max-lg:duration-300
             ${sidebarOpen ? "max-lg:translate-x-0" : "max-lg:translate-x-full"}

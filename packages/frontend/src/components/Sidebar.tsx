@@ -66,8 +66,8 @@ export default function Sidebar({
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50/70 dark:bg-gray-800/70">
-      <div className="p-3 space-y-2 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80">
+    <div className="h-full flex flex-col bg-gray-50/70 dark:bg-zinc-800/70">
+      <div className="p-3 space-y-2 border-b border-gray-200 dark:border-zinc-700 bg-white/80 dark:bg-zinc-800/80">
         <SearchBar value={query} onChange={setQuery} />
         <FilterBar departments={departments} filters={filters} onFilterChange={updateFilters} />
       </div>
@@ -109,8 +109,6 @@ export default function Sidebar({
 
           <Pagination page={page} totalPages={totalPages} onPageChange={goToPage} />
         </div>
-
-
       </div>
 
       {conflictState && (

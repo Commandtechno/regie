@@ -31,10 +31,10 @@ export default function SectionPicker({ course, onSelect, onClose }: Props) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
-        className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-sm w-full max-h-[70vh] overflow-hidden"
+        className="relative bg-white dark:bg-zinc-800 rounded-xl shadow-2xl max-w-sm w-full max-h-[70vh] overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
-        <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-700">
+        <div className="px-5 py-4 border-b border-gray-100 dark:border-zinc-700">
           <h3 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             <ArrowLeftRight className="w-4 h-4 text-cu-gold" />
             Change Section — {course.code}

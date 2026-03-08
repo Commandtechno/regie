@@ -42,14 +42,14 @@ export default function WishlistPanel({ items, onAddToSchedule, onRemove }: Prop
               </div>
               <button
                 onClick={() => onAddToSchedule(course)}
-                className="p-1 text-gray-500 dark:text-gray-400 hover:text-cu-gold hover:bg-white/60 dark:hover:bg-gray-700/60 rounded transition-colors"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-cu-gold hover:bg-white/60 dark:hover:bg-zinc-700/60 rounded transition-colors"
                 title="Add to schedule"
               >
                 <Plus className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => onRemove(course.crn)}
-                className="p-1 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-white/60 dark:hover:bg-gray-700/60 rounded transition-colors"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-white/60 dark:hover:bg-zinc-700/60 rounded transition-colors"
                 title="Remove from wishlist"
               >
                 <X className="w-3.5 h-3.5" />

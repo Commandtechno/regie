@@ -29,7 +29,7 @@ export default function CalendarBlock({ course, colorIndex, style, onClick }: Pr
   let tooltip: ReactNode = null;
   if (showTooltip) {
     tooltip = (
-      <div className="absolute z-50 left-full top-0 ml-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-3 text-xs text-gray-700 dark:text-gray-300 pointer-events-none">
+      <div className="absolute z-50 left-full top-0 ml-2 w-56 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-gray-200 dark:border-zinc-700 p-3 text-xs text-gray-700 dark:text-gray-300 pointer-events-none">
         <p className="font-bold text-sm text-gray-900 dark:text-gray-100">{course.code}</p>
         <p className="text-gray-600 dark:text-gray-400 mt-0.5">{course.title}</p>
         <div className="mt-2 space-y-0.5">

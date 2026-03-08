@@ -42,7 +42,7 @@ export default function LeftPanel({
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50/70 dark:bg-gray-800/70 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+    <div className="h-full flex flex-col bg-gray-50/70 dark:bg-zinc-800/70 border-r border-gray-200 dark:border-zinc-700 overflow-y-auto">
       <div className="p-3">
         <ScheduleList
           courses={scheduledCourses}
@@ -52,7 +52,7 @@ export default function LeftPanel({
         />
       </div>
 
-      {/* <div className="border-t border-gray-200 dark:border-gray-700 mx-3" />
+      {/* <div className="border-t border-gray-200 dark:border-zinc-700 mx-3" />
 
       <div className="p-3">
         <WishlistPanel
@@ -62,7 +62,7 @@ export default function LeftPanel({
         />
       </div> */}
 
-      <div className="border-t border-gray-200 dark:border-gray-700 mx-3" />
+      <div className="border-t border-gray-200 dark:border-zinc-700 mx-3" />
 
       <div className="p-3">
         <AiAdvisor
