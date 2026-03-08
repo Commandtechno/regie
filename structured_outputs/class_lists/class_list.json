@@ -1,0 +1,53 @@
+{
+    "class_list_name": "Bachelor of Arts in Mathematics",
+    "classes": [
+        {
+            "code": "MATH3001",
+            "sections": [
+                {
+                    "type": "LEC",
+                    "time": "MWF12:15-13:20"
+                },
+                {
+                    "type": "LEC",
+                    "time": "TTh12:15-13:20"
+                }
+            ],
+            "credit_hours": 3,
+            "priority": 1
+        },
+        {
+            "code": "MATH3140",
+            "prerequisites": [
+                "MATH2001",
+                "MATH2130"
+            ],
+            "credit_hours": 3,
+            "priority": 1
+        },
+        {
+            "code": "MATH2135",
+            "prerequisites": [
+                "MATH2300"
+            ],
+            "credit_hours": 3,
+            "priority": 1
+        },
+        {
+            "code": "MATH4510",
+            "prerequisites": [
+                "MATH2400"
+            ],
+            "credit_hours": 3,
+            "priority": 2
+        },
+        {
+            "code": "MATH3210",
+            "prerequisites": [
+                "MATH2001"
+            ],
+            "credit_hours": 3,
+            "priority": 3
+        }
+    ]
+}
