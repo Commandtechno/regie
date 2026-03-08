@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CU Boulder Course Scheduler</title>
+    <script>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const theme = stored ? JSON.parse(stored) : null;
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

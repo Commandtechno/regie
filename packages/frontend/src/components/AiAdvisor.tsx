@@ -107,7 +107,7 @@ export default function AiAdvisor({
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-2 text-sm font-semibold text-gray-700"
+        className="w-full flex items-center justify-between py-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
       >
         <span className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-cu-gold" />
@@ -121,25 +121,25 @@ export default function AiAdvisor({
           {state.type === "upload" && (
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-cu-gold hover:bg-amber-50/30"
+              className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-cu-gold hover:bg-amber-50/30 dark:hover:bg-amber-900/20"
             >
               <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleInputChange} className="hidden" />
-              <Upload className="w-5 h-5 text-gray-400 mx-auto mb-2" />
-              <p className="text-xs text-gray-600">Upload your degree audit (PDF)</p>
+              <Upload className="w-5 h-5 text-gray-400 dark:text-gray-500 mx-auto mb-2" />
+              <p className="text-xs text-gray-600 dark:text-gray-400">Upload your degree audit (PDF)</p>
             </div>
           )}
 
           {state.type === "loading" && (
-            <div className="flex flex-col items-center justify-center py-6 text-gray-500">
+            <div className="flex flex-col items-center justify-center py-6 text-gray-500 dark:text-gray-400">
               <Loader2 className="w-5 h-5 animate-spin mb-2" />
               <p className="text-xs">{state.message}</p>
             </div>
           )}
 
           {state.type === "error" && (
-            <div className="p-3 rounded-lg bg-red-50 border border-red-100">
-              <p className="text-xs text-red-600 mb-2">{state.message}</p>
-              <button onClick={handleReset} className="text-xs text-gray-600 hover:text-gray-800 underline">
+            <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800">
+              <p className="text-xs text-red-600 dark:text-red-400 mb-2">{state.message}</p>
+              <button onClick={handleReset} className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 underline">
                 Try again
               </button>
             </div>
@@ -148,7 +148,7 @@ export default function AiAdvisor({
           {state.type === "results" && (
             <div className="space-y-3">
               {state.recommendations.length === 0 ? (
-                <p className="text-xs text-gray-400 py-3 text-center">No recommendations found.</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 py-3 text-center">No recommendations found.</p>
               ) : (
                 state.recommendations.map(({ priority, courses }) => {
                   const group = createCourseGroup(courses);
@@ -170,7 +170,7 @@ export default function AiAdvisor({
               )}
               <button
                 onClick={handleReset}
-                className="w-full flex items-center justify-center gap-1.5 py-1.5 text-[11px] text-gray-500 hover:text-gray-700 transition-colors"
+                className="w-full flex items-center justify-center gap-1.5 py-1.5 text-[11px] text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 Reset

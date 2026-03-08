@@ -119,14 +119,14 @@ export default function Calendar({ courses, onCourseClick }: Props) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="flex border-b border-gray-200 bg-gray-50/80">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50/80 dark:bg-gray-800">
         <div className="w-16 shrink-0" />
         {DAY_LABELS.map((label, i) => (
           <div
             key={i}
             className={`flex-1 text-center py-2.5 text-xs font-semibold tracking-wide uppercase ${
-              dayIdx === i ? "text-cu-gold bg-amber-50/60" : "text-gray-500"
+              dayIdx === i ? "text-cu-gold bg-amber-50/60 dark:bg-amber-900/20" : "text-gray-500 dark:text-gray-400"
             }`}
           >
             <span className="hidden sm:inline">{label}</span>
@@ -141,7 +141,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
             {hours.map(h => (
               <div
                 key={h}
-                className="absolute right-2 text-[10px] text-gray-400 leading-none"
+                className="absolute right-2 text-[10px] text-gray-400 dark:text-gray-500 leading-none"
                 style={{ top: (h - START_HOUR) * 2 * ROW_HEIGHT - 5 }}
               >
                 {formatHour(h)}
@@ -153,19 +153,19 @@ export default function Calendar({ courses, onCourseClick }: Props) {
             {[0, 1, 2, 3, 4].map(day => (
               <div
                 key={day}
-                className={`flex-1 relative border-l border-gray-100 ${dayIdx === day ? "bg-amber-50/30" : ""}`}
+                className={`flex-1 relative border-l border-gray-100 dark:border-gray-700 ${dayIdx === day ? "bg-amber-50/30 dark:bg-amber-900/20" : ""}`}
               >
                 {hours.map(h => (
                   <div
                     key={h}
-                    className="absolute left-0 right-0 border-t border-gray-100"
+                    className="absolute left-0 right-0 border-t border-gray-100 dark:border-gray-700"
                     style={{ top: (h - START_HOUR) * 2 * ROW_HEIGHT }}
                   />
                 ))}
                 {hours.map(h => (
                   <div
                     key={`${h}-half`}
-                    className="absolute left-0 right-0 border-t border-gray-50"
+                    className="absolute left-0 right-0 border-t border-gray-50 dark:border-gray-800"
                     style={{ top: (h - START_HOUR) * 2 * ROW_HEIGHT + ROW_HEIGHT }}
                   />
                 ))}
