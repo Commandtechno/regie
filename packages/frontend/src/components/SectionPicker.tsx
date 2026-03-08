@@ -57,7 +57,7 @@ export default function SectionPicker({ course, onSelect, onClose }: Props) {
             <button
               key={s.crn}
               onClick={() => onSelect(s)}
-              className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors cursor-pointer"
+              className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-amber-50 dark:hover:bg-cu-gold/30 transition-colors cursor-pointer"
             >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
