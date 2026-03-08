@@ -4,12 +4,14 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 import pathlib
 import datetime
+import json
 
 class Class(BaseModel):
     code: str = Field(description="Name code of class. (Ex: MATH2001)")
-    name: str = Field(description="Name of class. (Ex: Introduction to Discrete Mathematics)")
+    # name: str = Field(description="Name of class. (Ex: Introduction to Discrete Mathematics)")
     prerequisites: List[str] = Field(description="A list of classes that are prerequisites for this class.")
     credit_hours: int = Field(description="Credit hours for the class.")
+    priority: int = Field(description="Number 1-5 corresponding to how important the class is for the degree.")
 
 class ClassList(BaseModel):
     class_list_name: str = Field(description="The name of the degree or program.")
@@ -59,7 +61,9 @@ response = client.models.generate_content(
 
 
 class_list = ClassList.model_validate_json(response.text)
-print(class_list)
+
+json_data = class_list.model_dump()
+print(json.dumps(json_data, indent=4))
 
 et = datetime.datetime.now()
 print("end time: ", et)
