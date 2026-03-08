@@ -21,9 +21,11 @@ class ClassList(BaseModel):
 
 client = genai.Client()
 
-filepath = pathlib.Path('./audits/audit_2026-03-07_17_07_58.0_Sat_Mar_07_17_08_04_MST_2026.pdf')
+filepath = pathlib.Path('./audits/audit.md')
 
 credit_hours = 17
+
+
 
 prompt = f"""
 Please extract the entire degree audit in the PDF.
@@ -49,7 +51,7 @@ response = client.models.generate_content(
     contents=[
         types.Part.from_bytes(
             data=filepath.read_bytes(),
-            mime_type='application/pdf',
+            mime_type='text/plain',
         ),
         prompt,
     ],
