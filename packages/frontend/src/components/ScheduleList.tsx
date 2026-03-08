@@ -53,8 +53,9 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
             >
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold text-gray-800 truncate">{course.code}</p>
+                <p className="text-[10px] text-gray-600">{course.title}</p>
                 <p className="text-[10px] text-gray-600 truncate">
-                  {course.schd} {course.no} · {course.meets || "TBA"}
+                  {course.schd} {course.no} • {course.meets || "TBA"}
                 </p>
               </div>
               <button

@@ -223,14 +223,15 @@ export default function CourseCard({
     isOpen: boolean,
     setIsOpen: (v: boolean) => void,
     onSelect: (idx: number) => void,
-    hasMultiple: boolean
+    hasMultiple: boolean,
+    disabled: boolean
   ) => {
     if (!selected) return null;
     if (!hasMultiple) {
       // Single section - just display inline
       return (
         <div className="mt-2">
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-500">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-500 px-2 py-1.5 bg-gray-50 rounded-md border border-gray-200">
             <span>
               {selected.schd} {selected.no}
             </span>
@@ -244,8 +245,9 @@ export default function CourseCard({
     return (
       <div className="mt-2 relative">
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between gap-2 px-2 py-1.5 text-[11px] text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md border border-gray-200 transition-colors"
+          disabled={disabled}
+          onClick={() => !disabled && setIsOpen(!isOpen)}
+          className="w-full flex items-center justify-between gap-2 px-2 py-1.5 text-[11px] text-gray-600 bg-gray-50 not-disabled:hover:bg-gray-100 rounded-md border border-gray-200 transition-colors disabled:cursor-not-allowed"
         >
           <span className="truncate">
             {selected.schd} {selected.no} · {selected.meets || "TBA"} · {selected.instr || "TBA"}
@@ -304,7 +306,7 @@ export default function CourseCard({
 
   return (
     <div
-      className={`p-3 bg-white rounded-lg shadow-sm transition-all hover:shadow-lg ${hasConflict_ ? "opacity-60" : ""}`}
+      className={`p-3 bg-white rounded-lg border border-gray-200 transition-all hover:shadow-lg ${hasConflict_ ? "opacity-60" : ""}`}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
@@ -327,7 +329,8 @@ export default function CourseCard({
             lectureDropdownOpen,
             setLectureDropdownOpen,
             handlePrimarySelect,
-            hasMultiplePrimaries
+            hasMultiplePrimaries,
+            isScheduled
           )}
 
           {/* Dependent dropdown - only if primary has linked dependents */}
@@ -340,7 +343,8 @@ export default function CourseCard({
               dependentDropdownOpen,
               setDependentDropdownOpen,
               handleDependentSelect,
-              hasMultipleDependents
+              hasMultipleDependents,
+              isScheduled
             )}
         </>
       ) : (
@@ -353,7 +357,8 @@ export default function CourseCard({
           lectureDropdownOpen,
           setLectureDropdownOpen,
           handlePrimarySelect,
-          hasMultiplePrimaries
+          hasMultiplePrimaries,
+          isScheduled
         )
       )}
 

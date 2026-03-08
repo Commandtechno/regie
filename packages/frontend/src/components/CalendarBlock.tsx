@@ -52,7 +52,7 @@ export default function CalendarBlock({ course, colorIndex, style, onClick }: Pr
 
   return (
     <div
-      className={`absolute left-0.5 right-0.5 rounded border cursor-pointer overflow-hidden transition-shadow hover:shadow-md ${colorClass}`}
+      className={`absolute left-0.5 right-0.5 rounded cursor-pointer overflow-hidden transition-shadow hover:shadow-md ${colorClass}`}
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -62,12 +62,11 @@ export default function CalendarBlock({ course, colorIndex, style, onClick }: Pr
         <p className="font-semibold text-[11px] leading-tight truncate">{course.code}</p>
         {!compact && (
           <>
+            <p className="text-[10px] leading-tight truncate opacity-90">{course.title}</p>
             <p className="text-[10px] leading-tight truncate opacity-80">
               {course.schd} {course.no}
-            </p>
-            <p className="text-[10px] leading-tight truncate opacity-70">
               {course.meetingTimes[0] &&
-                formatTimeRange(course.meetingTimes[0].start_time, course.meetingTimes[0].end_time)}
+                " • " + formatTimeRange(course.meetingTimes[0].start_time, course.meetingTimes[0].end_time)}
             </p>
           </>
         )}
