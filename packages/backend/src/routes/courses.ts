@@ -109,7 +109,7 @@ courses.get("/", async c => {
     pipeline.push({
       $match: {
         _searchScore: {
-          $gte: Math.min(q.length, 4)
+          $gte: Math.min(q.length - 1, 4)
         }
       }
     });

@@ -53,7 +53,7 @@ export default function App() {
         {/* Left panel: schedule + wishlist */}
         <div
           className={`
-            w-[280px] shrink-0 border-r border-gray-200 bg-gray-50 overflow-hidden
+            w-[360px] shrink-0 border-r border-gray-200 bg-gray-50 overflow-hidden
             max-lg:absolute max-lg:inset-y-0 max-lg:left-0 max-lg:z-30 max-lg:shadow-2xl
             max-lg:transition-transform max-lg:duration-300
             ${leftPanelOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full"}
@@ -117,9 +117,7 @@ export default function App() {
         )}
       </div>
 
-      {selectedCourse && (
-        <CourseDetail course={selectedCourse} onClose={() => setSelectedCourse(null)} />
-      )}
+      {selectedCourse && <CourseDetail course={selectedCourse} onClose={() => setSelectedCourse(null)} />}
     </div>
   );
 }

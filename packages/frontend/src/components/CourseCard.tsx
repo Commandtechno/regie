@@ -3,7 +3,16 @@ import { Plus, Heart, ChevronDown } from "lucide-react";
 import type { Course, CourseGroup } from "../types.ts";
 import { hasConflict } from "../utils/conflicts.ts";
 
+const priorityColors: Record<number, string> = {
+  1: "bg-red-500",
+  2: "bg-orange-500",
+  3: "bg-yellow-500",
+  4: "bg-emerald-500",
+  5: "bg-blue-500"
+};
+
 interface Props {
+  priority: number;
   group: CourseGroup;
   scheduledCourses: Course[];
   wishlist: Course[];
@@ -14,6 +23,7 @@ interface Props {
 }
 
 export default function CourseCard({
+  priority,
   group,
   scheduledCourses,
   wishlist,
@@ -90,7 +100,8 @@ export default function CourseCard({
   // Auto-select non-conflicting dependent when schedule or primary changes
   useEffect(() => {
     // Don't override if this course's dependent is already scheduled
-    if (scheduledDependentIndex >= 0 && linkedDependents.some(d => d.crn === dependents[scheduledDependentIndex]?.crn)) return;
+    if (scheduledDependentIndex >= 0 && linkedDependents.some(d => d.crn === dependents[scheduledDependentIndex]?.crn))
+      return;
 
     const betterIdx = linkedDependents.findIndex(d => !hasConflict(d, scheduledCourses));
     if (betterIdx >= 0 && betterIdx !== selectedDependentIndex) {
@@ -300,6 +311,7 @@ export default function CourseCard({
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
+            <span className={`w-2 h-2 rounded-full ${priorityColors[priority]}`} />
             <p className="font-semibold text-sm text-gray-900 truncate">{group.code}</p>
           </div>
           <p className="text-xs text-gray-600 mt-0.5 truncate">{group.title}</p>
