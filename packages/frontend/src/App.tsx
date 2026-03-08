@@ -63,7 +63,7 @@ export default function App() {
             total={search.total}
             page={search.page}
             totalPages={search.totalPages}
-            loadMore={search.loadMore}
+            goToPage={search.goToPage}
             departments={departments}
             scheduledCourses={scheduler.scheduledCourses}
             wishlist={scheduler.wishlist}

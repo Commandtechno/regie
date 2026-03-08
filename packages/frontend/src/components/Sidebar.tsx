@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import type { Course, Department } from "../types.ts";
+import type { Course, CourseGroup, Department } from "../types.ts";
 import SearchBar from "./SearchBar.tsx";
 import FilterBar from "./FilterBar.tsx";
 import CourseCard from "./CourseCard.tsx";
 import ScheduleList from "./ScheduleList.tsx";
 import WishlistPanel from "./WishlistPanel.tsx";
 import ConflictDialog from "./ConflictDialog.tsx";
+import Pagination from "./Pagination.tsx";
 import { hasConflict } from "../utils/conflicts.ts";
 
 interface Props {
@@ -14,12 +15,12 @@ interface Props {
   setQuery: (v: string) => void;
   filters: Record<string, string | undefined>;
   updateFilters: (f: Record<string, string | undefined>) => void;
-  results: Course[];
+  results: CourseGroup[];
   loading: boolean;
   total: number;
   page: number;
   totalPages: number;
-  loadMore: () => void;
+  goToPage: (page: number) => void;
   departments: Department[];
   scheduledCourses: Course[];
   wishlist: Course[];
@@ -41,7 +42,7 @@ export default function Sidebar({
   total,
   page,
   totalPages,
-  loadMore,
+  goToPage,
   departments,
   scheduledCourses,
   wishlist,
@@ -104,36 +105,18 @@ export default function Sidebar({
             </div>
           )}
 
-          {results.map((course) => {
-            const conflict = hasConflict(course, scheduledCourses);
-            const isScheduled = scheduledCourses.some((c) => c.crn === course.crn);
-            const isWishlisted = wishlist.some((c) => c.crn === course.crn);
-            return (
-              <CourseCard
-                key={course.crn}
-                course={course}
-                conflictWith={conflict}
-                isScheduled={isScheduled}
-                isWishlisted={isWishlisted}
-                onAdd={() => handleAdd(course)}
-                onWishlist={() => onAddToWishlist(course)}
-              />
-            );
-          })}
+          {results.map((group) => (
+            <CourseCard
+              key={group.code}
+              group={group}
+              scheduledCourses={scheduledCourses}
+              wishlist={wishlist}
+              onAdd={(course) => handleAdd(course)}
+              onWishlist={(course) => onAddToWishlist(course)}
+            />
+          ))}
 
-          {page < totalPages && (
-            <button
-              onClick={loadMore}
-              disabled={loading}
-              className="w-full py-2.5 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-lg transition-colors disabled:opacity-50"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin mx-auto" />
-              ) : (
-                `Load More (${results.length} of ${total})`
-              )}
-            </button>
-          )}
+          <Pagination page={page} totalPages={totalPages} onPageChange={goToPage} />
         </div>
 
         <div className="border-t border-gray-200 mx-3" />
