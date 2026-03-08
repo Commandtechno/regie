@@ -20,6 +20,7 @@ interface Props {
   onReplaceSection?: (oldCrn: string, newCourse: Course) => void;
   onAddToWishlist: (course: Course) => void;
   onRemoveFromWishlist: (course: Course) => void;
+  onPreviewCourses?: (courses: Course[]) => void;
 }
 
 export default function CourseCard({
@@ -30,7 +31,8 @@ export default function CourseCard({
   onAdd,
   onReplaceSection,
   onAddToWishlist,
-  onRemoveFromWishlist
+  onRemoveFromWishlist,
+  onPreviewCourses
 }: Props) {
   // Split sections into primaries and dependents
   const primaries = useMemo(() => group.sections.filter(s => s.is_enroll_section === "1"), [group.sections]);
@@ -265,6 +267,13 @@ export default function CourseCard({
                 <button
                   key={section.crn}
                   onClick={() => onSelect(idx)}
+                  onMouseEnter={() => onPreviewCourses?.([section])}
+                  onMouseLeave={() => {
+                    // restore card-level preview when leaving an item but staying in card
+                    const preview: Course[] = [];
+                    if (selected) preview.push(selected);
+                    onPreviewCourses?.(preview);
+                  }}
                   className={`w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[11px] transition-colors ${
                     isSelected ? "bg-amber-50 dark:bg-cu-gold/30" : "hover:bg-zinc-50 dark:hover:bg-zinc-700"
                   } ${!isAvailable ? "opacity-50" : ""}`}
@@ -307,6 +316,14 @@ export default function CourseCard({
   return (
     <div
       className={`p-3 bg-white dark:bg-zinc-800 rounded-lg border border-gray-200 dark:border-zinc-700 transition-all hover:shadow-lg`}
+      onMouseEnter={() => {
+        if (!onPreviewCourses) return;
+        const preview: Course[] = [];
+        if (selectedPrimary) preview.push(selectedPrimary);
+        if (hasLinkedDependents && selectedDependent) preview.push(selectedDependent);
+        onPreviewCourses(preview);
+      }}
+      onMouseLeave={() => onPreviewCourses?.([])}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">

@@ -17,6 +17,7 @@ import WalkingDistance from "./WalkingDistance.tsx";
 
 interface Props {
   courses: Course[];
+  previewCourses?: Course[];
   onCourseClick: (course: Course) => void;
 }
 
@@ -30,7 +31,7 @@ interface PlacedBlock {
   endTime: number;
 }
 
-export default function Calendar({ courses, onCourseClick }: Props) {
+export default function Calendar({ courses, previewCourses, onCourseClick }: Props) {
   const [timeOffset, setTimeOffset] = useState<number | null>(currentTimeOffset());
   const [dayIdx, setDayIdx] = useState<number | null>(currentDayIndex());
 
@@ -72,6 +73,26 @@ export default function Calendar({ courses, onCourseClick }: Props) {
     }
     return map;
   }, [blocks]);
+
+  const previewBlocks = useMemo(() => {
+    if (!previewCourses?.length) return [];
+    const scheduledCrns = new Set(courses.map(c => c.crn));
+    const placed: PlacedBlock[] = [];
+    previewCourses.forEach((course, i) => {
+      if (scheduledCrns.has(course.crn)) return;
+      const colorIndex = courses.length + i;
+      for (const mt of course.meetingTimes) {
+        const day = parseInt(mt.meet_day);
+        if (day < 0 || day > 4) continue;
+        const startTime = timeToMinutesFromStart(mt.start_time);
+        const endTime = timeToMinutesFromStart(mt.end_time);
+        const top = topOffset(startTime);
+        const height = blockHeight(startTime, endTime);
+        placed.push({ course, colorIndex, day, top, height, startTime, endTime });
+      }
+    });
+    return placed;
+  }, [previewCourses, courses]);
 
   const overlapGroups = useMemo(() => {
     const result: Record<number, { block: PlacedBlock; col: number; totalCols: number }[]> = {
@@ -204,6 +225,25 @@ export default function Calendar({ courses, onCourseClick }: Props) {
                     </div>
                   );
                 })}
+
+                {previewBlocks
+                  .filter(b => b.day === day)
+                  .map(b => (
+                    <CalendarBlock
+                      key={`preview-${b.course.crn}-${b.day}`}
+                      course={b.course}
+                      colorIndex={b.colorIndex}
+                      isPreview
+                      style={{
+                        top: b.top,
+                        height: b.height,
+                        left: "0.5px",
+                        right: "0.5px",
+                        position: "absolute"
+                      }}
+                      onClick={() => {}}
+                    />
+                  ))}
               </div>
             ))}
 
