@@ -73,6 +73,29 @@ export default function CourseCard({
     return dependents.filter(d => linkedCrns.includes(d.crn));
   }, [dependents, linkedCrns]);
 
+  // Auto-select non-conflicting primary when schedule changes
+  useEffect(() => {
+    // Don't override if this course's primary is already scheduled
+    if (scheduledPrimaryIndex >= 0) return;
+
+    // Find first primary without a conflict
+    const betterIdx = primaries.findIndex(p => !hasConflict(p, scheduledCourses));
+    if (betterIdx >= 0 && betterIdx !== selectedPrimaryIndex) {
+      setSelectedPrimaryIndex(betterIdx);
+    }
+  }, [scheduledCourses]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-select non-conflicting dependent when schedule or primary changes
+  useEffect(() => {
+    // Don't override if this course's dependent is already scheduled
+    if (scheduledDependentIndex >= 0 && linkedDependents.some(d => d.crn === dependents[scheduledDependentIndex]?.crn)) return;
+
+    const betterIdx = linkedDependents.findIndex(d => !hasConflict(d, scheduledCourses));
+    if (betterIdx >= 0 && betterIdx !== selectedDependentIndex) {
+      setSelectedDependentIndex(betterIdx);
+    }
+  }, [scheduledCourses, linkedDependents]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const hasLinkedDependents = linkedDependents.length > 0;
 
   // Determine initial selected dependent index
@@ -158,12 +181,22 @@ export default function CourseCard({
 
   const handlePrimarySelect = (index: number) => {
     const originalIndex = primaries.findIndex(s => s.crn === sortedPrimaries[index].crn);
+    const newPrimary = primaries[originalIndex];
+    // If this primary was scheduled, replace it live
+    if (isPrimaryScheduled && newPrimary && onReplaceSection) {
+      onReplaceSection(selectedPrimary.crn, newPrimary);
+    }
     setSelectedPrimaryIndex(originalIndex);
     setLectureDropdownOpen(false);
   };
 
   const handleDependentSelect = (index: number) => {
     const originalIndex = linkedDependents.findIndex(s => s.crn === sortedDependents[index].crn);
+    const newDependent = linkedDependents[originalIndex];
+    // If this dependent was scheduled, replace it live
+    if (isDependentScheduled && newDependent && onReplaceSection) {
+      onReplaceSection(selectedDependent.crn, newDependent);
+    }
     setSelectedDependentIndex(originalIndex);
     setDependentDropdownOpen(false);
   };
@@ -179,6 +212,7 @@ export default function CourseCard({
     onSelect: (idx: number) => void,
     hasMultiple: boolean
   ) => {
+    if (!selected) return null;
     if (!hasMultiple) {
       // Single section - just display inline
       return (
