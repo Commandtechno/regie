@@ -1,0 +1,46 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DB=${MONGODB_DB:-classes}
+      - MONGODB_COLLECTION=${MONGODB_COLLECTION:-courses}
+      - PORT=3001
+    restart: unless-stopped
+
+  structured_outputs:
+    build:
+      context: ./structured_outputs
+    ports:
+      - "5000:5000"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - BACKEND_URL=http://backend:3001
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: packages/frontend/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - structured_outputs
+    restart: unless-stopped
+
+  # mcp:
+  #   build:
+  #     context: .
+  #     dockerfile: packages/mcp/Dockerfile
+  #   environment:
+  #     - BACKEND_URL=http://backend:3001
+  #   depends_on:
+  #     - backend
+  #   restart: unless-stopped

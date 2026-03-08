@@ -1,3 +1,4 @@
+import os
 import requests
 from dotenv import load_dotenv
 from collections import defaultdict
@@ -5,6 +6,8 @@ from collections import defaultdict
 load_dotenv()
 
 import re
+
+BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:3001")
 
 
 def normalize_code(code):
@@ -26,7 +29,7 @@ def normalize_code(code):
 
 
 def resolve_courses(codes: list[str]):
-    res = requests.post("http://localhost:3001/api/courses/bulk", json=codes).json()
+    res = requests.post(f"{BACKEND_URL}/api/courses/bulk", json=codes).json()
     courses = defaultdict(list)
     for course in res:
         courses[course["code"]].append(course)
