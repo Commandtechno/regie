@@ -3,14 +3,19 @@ from secrets import token_hex
 from flask import Flask, request
 from util import resolve_courses
 
+from typing import list
+
 from parse_audit.audit_to_markdown import parse_audit_json_to_markdown
 from parse_audit.parse_degree_audit import parse_audit_pdf_to_json
 from pathlib import Path
 import os
 
+import util
+
 
 from get_recommended_courses import create_recommended_class_list
-from schedule_builder import build_schedule
+
+# from schedule_builder import build_schedule
 
 app = Flask(__name__)
 
@@ -48,16 +53,27 @@ def getRecommendedCourses():
     file_id = req_data["file_id"]
 
     json = create_recommended_class_list(file_id)
+
+    normalized_codes: dict[str, str] = {}
+    for c in json["classes"]:
+        normalized_codes = util.normalize_code(c["code"])
+
+    print("course ids: ", normalized_codes.values())
+
+    resolved_courses = util.resolve_courses(list(normalized_codes.values()))
+    for course in json["classes"]:
+        course["course"] = resolved_courses[normalized_codes[course["code"]]]
+
     return json
 
 
-@app.route("/ai/buildSchedule", methods=["GET"])
-def getRecommendedSchedule():
-    req_data = request.get_json()
-    file_id = req_data["file_id"]
-
-    json = build_schedule(file_id)
-    return json
-
-
-app.run()
+# @app.route("/ai/buildSchedule", methods=["GET"])
+# def getRecommendedSchedule():
+#    req_data = request.get_json()
+#    file_id = req_data["file_id"]
+#
+#    json = build_schedule(file_id)
+#    return json
+#
+#
+# app.run()

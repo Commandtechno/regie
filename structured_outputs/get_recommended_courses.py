@@ -23,7 +23,7 @@ class Class(BaseModel):
 
 class ClassList(BaseModel):
     class_list_name: str = Field(description="The name of the degree or program.")
-    classes: List[Class] = Field(description="A list of classes to reccomend.")
+    classes: List[Class] = Field(description="A list of classes to recommended.")
     thoughts: str = Field(
         description="Comments describing the reasons for how the list was ordered."
     )
@@ -64,7 +64,7 @@ def create_recommended_class_list(file_id):
     markdown_file_path = pathlib.Path(f"./documents/{file_id}.md")
 
     response = client.models.generate_content(
-        model="gemini-3-flash-preview",
+        model="gemini-3.1-flash-lite-preview",
         contents=[
             types.Part.from_bytes(
                 data=markdown_file_path.read_bytes(),
