@@ -3,13 +3,13 @@ import { AlertTriangle } from "lucide-react";
 import type { Course } from "../types.ts";
 
 interface Props {
-  course: Course;
+  courses: Course[];
   conflictWith: Course;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-export default function ConflictDialog({ course, conflictWith, onConfirm, onCancel }: Props) {
+export default function ConflictDialog({ courses, conflictWith, onConfirm, onCancel }: Props) {
   const [closing, setClosing] = useState(false);
 
   const handleCancel = () => {
@@ -33,7 +33,7 @@ export default function ConflictDialog({ course, conflictWith, onConfirm, onCanc
           <div>
             <h3 className="font-semibold text-gray-900">Schedule Conflict</h3>
             <p className="text-sm text-gray-600 mt-1">
-              <span className="font-medium">{course.code}</span> ({course.schd} {course.no}) conflicts with{" "}
+              <span className="font-medium">{courses[0].code}</span> ({courses[0].schd} {courses[0].no}) conflicts with{" "}
               <span className="font-medium">{conflictWith.code}</span> ({conflictWith.schd} {conflictWith.no}).
             </p>
             <p className="text-sm text-gray-500 mt-2">Add anyway?</p>

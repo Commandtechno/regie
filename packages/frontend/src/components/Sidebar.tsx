@@ -54,15 +54,21 @@ export default function Sidebar({
   onRemoveFromWishlist,
 }: Props) {
   const [conflictState, setConflictState] = useState<{
-    course: Course;
+    courses: Course[];
     conflictWith: Course;
   } | null>(null);
 
-  const handleAdd = (course: Course) => {
-    const conflict = hasConflict(course, scheduledCourses);
-    if (conflict) {
-      setConflictState({ course, conflictWith: conflict });
-    } else {
+  const handleAdd = (courses: Course[]) => {
+    // Check all courses in the batch for conflicts against scheduled courses
+    for (const course of courses) {
+      const conflict = hasConflict(course, scheduledCourses);
+      if (conflict) {
+        setConflictState({ courses, conflictWith: conflict });
+        return;
+      }
+    }
+    // No conflicts — add all
+    for (const course of courses) {
       onAddCourse(course);
     }
   };
@@ -70,7 +76,7 @@ export default function Sidebar({
   const handleWishlistAdd = (course: Course) => {
     const conflict = hasConflict(course, scheduledCourses);
     if (conflict) {
-      setConflictState({ course, conflictWith: conflict });
+      setConflictState({ courses: [course], conflictWith: conflict });
     } else {
       onAddCourse(course);
     }
@@ -111,7 +117,7 @@ export default function Sidebar({
               group={group}
               scheduledCourses={scheduledCourses}
               wishlist={wishlist}
-              onAdd={(course) => handleAdd(course)}
+              onAdd={(courses) => handleAdd(courses)}
               onWishlist={(course) => onAddToWishlist(course)}
             />
           ))}
@@ -143,10 +149,12 @@ export default function Sidebar({
 
       {conflictState && (
         <ConflictDialog
-          course={conflictState.course}
+          courses={conflictState.courses}
           conflictWith={conflictState.conflictWith}
           onConfirm={() => {
-            onAddCourse(conflictState.course);
+            for (const course of conflictState.courses) {
+              onAddCourse(course);
+            }
             setConflictState(null);
           }}
           onCancel={() => setConflictState(null)}
