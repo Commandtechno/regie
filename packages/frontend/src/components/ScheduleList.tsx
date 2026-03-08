@@ -28,7 +28,7 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-2 text-sm font-semibold text-gray-700"
+        className="w-full flex items-center justify-between py-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
       >
         <span className="flex items-center gap-2">
           <GraduationCap className="w-4 h-4 text-cu-gold" />
@@ -40,7 +40,7 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
       {open && (
         <div className="space-y-1.5 mb-2">
           {courses.length === 0 && (
-            <p className="text-xs text-gray-400 py-3 text-center">
+            <p className="text-xs text-gray-400 dark:text-gray-500 py-3 text-center">
               No courses scheduled yet. Search and add courses to get started.
             </p>
           )}
@@ -52,22 +52,22 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
               }`}
             >
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-gray-800 truncate">{course.code}</p>
-                <p className="text-[10px] text-gray-600">{course.title}</p>
-                <p className="text-[10px] text-gray-600 truncate">
+                <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate">{course.code}</p>
+                <p className="text-[10px] text-gray-600 dark:text-gray-400">{course.title}</p>
+                <p className="text-[10px] text-gray-600 dark:text-gray-400 truncate">
                   {course.schd} {course.no} • {course.meets || "TBA"}
                 </p>
               </div>
               <button
                 onClick={() => setSectionPickerCourse(course)}
-                className="p-1 text-gray-500 hover:text-cu-gold hover:bg-white/60 rounded transition-colors"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-cu-gold hover:bg-white/60 dark:hover:bg-gray-700/60 rounded transition-colors"
                 title="Change section"
               >
                 <ArrowLeftRight className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => handleRemove(course.crn)}
-                className="p-1 text-gray-500 hover:text-red-600 hover:bg-white/60 rounded transition-colors"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-white/60 dark:hover:bg-gray-700/60 rounded transition-colors"
                 title="Remove"
               >
                 <X className="w-3.5 h-3.5" />
@@ -75,7 +75,7 @@ export default function ScheduleList({ courses, totalCredits, onRemove, onReplac
             </div>
           ))}
           {courses.length > 0 && (
-            <div className="text-right text-[11px] font-medium text-gray-500 pr-1 pt-1">
+            <div className="text-right text-[11px] font-medium text-gray-500 dark:text-gray-400 pr-1 pt-1">
               Total: {totalCredits} credits
             </div>
           )}

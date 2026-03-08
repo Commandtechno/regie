@@ -29,21 +29,21 @@ export default function CalendarBlock({ course, colorIndex, style, onClick }: Pr
   let tooltip: ReactNode = null;
   if (showTooltip) {
     tooltip = (
-      <div className="absolute z-50 left-full top-0 ml-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 p-3 text-xs text-gray-700 pointer-events-none">
-        <p className="font-bold text-sm text-gray-900">{course.code}</p>
-        <p className="text-gray-600 mt-0.5">{course.title}</p>
+      <div className="absolute z-50 left-full top-0 ml-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-3 text-xs text-gray-700 dark:text-gray-300 pointer-events-none">
+        <p className="font-bold text-sm text-gray-900 dark:text-gray-100">{course.code}</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-0.5">{course.title}</p>
         <div className="mt-2 space-y-0.5">
           <p>
-            <span className="text-gray-500">Instructor:</span> {course.instr || "TBA"}
+            <span className="text-gray-500 dark:text-gray-500">Instructor:</span> {course.instr || "TBA"}
           </p>
           <p>
-            <span className="text-gray-500">Section:</span> {course.schd} {course.no}
+            <span className="text-gray-500 dark:text-gray-500">Section:</span> {course.schd} {course.no}
           </p>
           <p>
-            <span className="text-gray-500">Credits:</span> {course.credits || "N/A"}
+            <span className="text-gray-500 dark:text-gray-500">Credits:</span> {course.credits || "N/A"}
           </p>
           <p>
-            <span className="text-gray-500">Schedule:</span> {course.meets || "TBA"}
+            <span className="text-gray-500 dark:text-gray-500">Schedule:</span> {course.meets || "TBA"}
           </p>
         </div>
       </div>
