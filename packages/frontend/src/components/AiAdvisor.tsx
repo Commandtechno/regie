@@ -121,7 +121,7 @@ export default function AiAdvisor({
           {state.type === "upload" && (
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-cu-gold hover:bg-amber-50/30 dark:hover:bg-amber-900/20"
+              className="border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-lg p-4 text-center cursor-pointer transition-colors hover:border-cu-gold hover:bg-amber-50/30 dark:hover:bg-cu-gold/20"
             >
               <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleInputChange} className="hidden" />
               <Upload className="w-5 h-5 text-gray-400 dark:text-gray-500 mx-auto mb-2" />

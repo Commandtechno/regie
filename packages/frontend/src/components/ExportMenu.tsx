@@ -57,7 +57,7 @@ export default function ExportMenu({ courses }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-1 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-cu-gold hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded transition-colors"
+                className="flex items-center gap-2 px-1 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-cu-gold hover:bg-amber-50 dark:hover:bg-cu-gold/30 rounded transition-colors"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 {c.code} ({c.schd} {c.no})

@@ -61,7 +61,7 @@ export default function FilterBar({ departments, filters, onFilterChange }: Prop
         {open ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         Filters
         {Object.values(filters).filter(Boolean).length > 0 && (
-          <span className="ml-1 px-1.5 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-cu-gold rounded-full text-[10px] font-medium">
+          <span className="ml-1 px-1.5 py-0.5 bg-amber-100 dark:bg-cu-gold/40 text-cu-gold rounded-full text-[10px] font-medium">
             {Object.values(filters).filter(Boolean).length}
           </span>
         )}

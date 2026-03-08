@@ -8,3 +8,7 @@
   --color-cu-dark-gray: #565a5c;
   --color-cu-light-gray: #a2a4a3;
 }
+
+html.dark {
+  color-scheme: dark;
+}

@@ -126,7 +126,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
           <div
             key={i}
             className={`flex-1 text-center py-2.5 text-xs font-semibold tracking-wide uppercase ${
-              dayIdx === i ? "text-cu-gold bg-amber-50/60 dark:bg-amber-900/20" : "text-gray-500 dark:text-gray-400"
+              dayIdx === i ? "text-cu-gold bg-amber-50/60 dark:bg-cu-gold/20" : "text-gray-500 dark:text-gray-400"
             }`}
           >
             <span className="hidden sm:inline">{label}</span>
@@ -153,7 +153,7 @@ export default function Calendar({ courses, onCourseClick }: Props) {
             {[0, 1, 2, 3, 4].map(day => (
               <div
                 key={day}
-                className={`flex-1 relative border-l border-gray-100 dark:border-zinc-700 ${dayIdx === day ? "bg-amber-50/30 dark:bg-amber-900/20" : ""}`}
+                className={`flex-1 relative border-l border-gray-100 dark:border-zinc-700 ${dayIdx === day ? "bg-amber-50/30 dark:bg-cu-gold/20" : ""}`}
               >
                 {hours.map(h => (
                   <div
