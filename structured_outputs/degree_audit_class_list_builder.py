@@ -6,6 +6,9 @@ import pathlib
 import datetime
 import json
 
+from parse_audit.audit_to_markdown import parse_audit_json_to_markdown
+from parse_audit.parse_degree_audit import parse_audit_pdf_to_json
+
 class Class(BaseModel):
     code: str = Field(description="Name code of class. (Ex: MATH2001)")
     # name: str = Field(description="Name of class. (Ex: Introduction to Discrete Mathematics)")
@@ -21,10 +24,13 @@ class ClassList(BaseModel):
 
 client = genai.Client()
 
-filepath = pathlib.Path('./audits/audit.md')
+pdf_file_path = pathlib.Path('./audits/audit_2026-03-07_17_07_58.0_Sat_Mar_07_17_08_04_MST_2026.pdf')
+
+json_file_path = pathlib.Path(parse_audit_pdf_to_json(pdf_file_path))
+
+markdown_file_path = pathlib.Path(parse_audit_json_to_markdown(json_file_path))
 
 credit_hours = 17
-
 
 
 prompt = f"""
@@ -50,7 +56,7 @@ response = client.models.generate_content(
     model="gemini-3-flash-preview",
     contents=[
         types.Part.from_bytes(
-            data=filepath.read_bytes(),
+            data=markdown_file_path.read_bytes(),
             mime_type='text/plain',
         ),
         prompt,

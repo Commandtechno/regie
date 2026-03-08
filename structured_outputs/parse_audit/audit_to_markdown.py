@@ -16,7 +16,7 @@ from collections import OrderedDict
 
 
 def fmt_course_row(c: dict) -> str:
-    status = "⏳ IN PROGRESS" if c["in_progress"] else f"✓ {c['grade']}"
+    status = "IN PROGRESS" if c["in_progress"] else f"COMPLETED"
     xfer   = f" [transfer ← {c['transfer_equivalent']}]" if c.get("transfer_equivalent") else \
              (" [transfer]" if c.get("transfer") else "")
     return f"| {c['term']} | {c['course_code']} | {c['title']} | {c['credits']} | {status}{xfer} |"
@@ -37,8 +37,8 @@ def course_table(courses: list[dict], indent: str = "") -> list[str]:
     if not courses:
         return []
     lines = [
-        f"{indent}| Term | Course | Title | Credits | Grade |",
-        f"{indent}|------|--------|-------|---------|-------|",
+        f"{indent}| Term | Course | Title | Credits | Status |",
+        f"{indent}|------|--------|-------|---------|--------|",
     ]
     for c in dedup_courses(courses):
         lines.append(indent + fmt_course_row(c))
@@ -126,7 +126,6 @@ def render(audit: dict) -> str:
         name   = req.get("name", "Unnamed Requirement")
         status = req.get("status")
         status_icon = {"OK": "✅", "+": "✅", "NO": "❌"}.get(status, "⚪") if status else "⚪"
-        min_g  = req.get("min_grade")
         gpa    = req.get("gpa")
         h_need = req.get("hours_needed")
         h_add  = req.get("hours_added")
@@ -136,7 +135,6 @@ def render(audit: dict) -> str:
         lines.append("")
 
         meta = []
-        if min_g:   meta.append(f"Minimum grade: **{min_g}**")
         if gpa:     meta.append(f"GPA in this area: **{gpa}**")
         if h_need:  meta.append(f"Hours still needed: **{h_need}**")
         if h_add:   meta.append(f"Hours applied: **{h_add}**")
@@ -211,21 +209,19 @@ def render(audit: dict) -> str:
     return "\n".join(lines)
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Convert parsed audit JSON to LLM-friendly markdown.")
-    parser.add_argument("json_file", help="Path to audit_parsed.json")
-    parser.add_argument("--output", "-o", default=None, help="Output .md file (default: stdout)")
-    args = parser.parse_args()
+def parse_audit_json_to_markdown(json_file, out_file = "audit.md"):
+    #parser = argparse.ArgumentParser(description="Convert parsed audit JSON to LLM-friendly markdown.")
+    #parser.add_argument("json_file", help="Path to audit_parsed.json")
+    #parser.add_argument("--output", "-o", default=None, help="Output .md file (default: stdout)")
+    #args = parser.parse_args()
 
-    data = json.loads(Path(args.json_file).read_text())
+    data = json.loads(Path(json_file).read_text())
     md   = render(data)
 
-    if args.output:
-        Path(args.output).write_text(md, encoding="utf-8")
-        print(f"Saved → {args.output}", file=sys.stderr)
+    if out_file:
+        Path(out_file).write_text(md, encoding="utf-8")
+        print(f"Saved → {out_file}", file=sys.stderr)
     else:
         print(md)
-
-
-if __name__ == "__main__":
-    main()
+    
+    return out_file

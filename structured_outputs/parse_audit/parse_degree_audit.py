@@ -357,16 +357,16 @@ def parse_audit(pdf_path: str) -> dict:
 
 # ─── CLI ──────────────────────────────────────────────────────────────────────
 
-def main():
-    parser = argparse.ArgumentParser(description="Parse a CU-style degree audit PDF into JSON.")
-    parser.add_argument("pdf", help="Path to the degree audit PDF")
-    parser.add_argument("--output", "-o", default=None,
-                        help="Output JSON file path (default: print to stdout)")
-    parser.add_argument("--indent", type=int, default=2,
-                        help="JSON indent level (default: 2)")
-    args = parser.parse_args()
+def parse_audit_pdf_to_json(pdf_file, out_file="./audits/audit.json"):
+    #parser = argparse.ArgumentParser(description="Parse a CU-style degree audit PDF into JSON.")
+    #parser.add_argument("pdf", help="Path to the degree audit PDF")
+    #parser.add_argument("--output", "-o", default=None,
+    #                    help="Output JSON file path (default: print to stdout)")
+    #parser.add_argument("--indent", type=int, default=2,
+    #                    help="JSON indent level (default: 2)")
+    #args = parser.parse_args()
 
-    pdf_path = Path(args.pdf)
+    pdf_path = Path(pdf_file)
     if not pdf_path.exists():
         print(f"Error: file not found: {pdf_path}", file=sys.stderr)
         sys.exit(1)
@@ -374,14 +374,12 @@ def main():
     print(f"Parsing {pdf_path.name} ...", file=sys.stderr)
     result = parse_audit(str(pdf_path))
 
-    output_json = json.dumps(result, indent=args.indent, ensure_ascii=False)
+    output_json = json.dumps(result, indent=2, ensure_ascii=False)
 
-    if args.output:
-        Path(args.output).write_text(output_json, encoding="utf-8")
-        print(f"Saved to {args.output}", file=sys.stderr)
+    if out_file:
+        Path(out_file).write_text(output_json, encoding="utf-8")
+        print(f"Saved to {out_file}", file=sys.stderr)
     else:
         print(output_json)
-
-
-if __name__ == "__main__":
-    main()
+    
+    return out_file
