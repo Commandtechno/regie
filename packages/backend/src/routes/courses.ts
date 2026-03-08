@@ -52,7 +52,7 @@ function parseCourse(doc: CourseDocument): Course {
     srcdb: doc.srcdb,
     department,
     courseNumber,
-    credits,
+    credits
   };
 }
 
@@ -77,11 +77,11 @@ function parseGroup(doc: Document): CourseGroup {
     department,
     courseNumber,
     credits: firstSection.credits,
-    sections,
+    sections
   };
 }
 
-courses.get("/", async (c) => {
+courses.get("/", async c => {
   const q = c.req.query("q");
   const department = c.req.query("department");
   const level = c.req.query("level");
@@ -103,8 +103,15 @@ courses.get("/", async (c) => {
     // Capture search score for sorting before grouping
     pipeline.push({
       $addFields: {
-        _searchScore: { $meta: "searchScore" },
-      },
+        _searchScore: { $meta: "searchScore" }
+      }
+    });
+    pipeline.push({
+      $match: {
+        _searchScore: {
+          $gte: Math.min(q.length, 4)
+        }
+      }
     });
   }
 
@@ -120,13 +127,13 @@ courses.get("/", async (c) => {
               $function: {
                 body: "function(s) { try { return JSON.parse(s); } catch { return []; } }",
                 args: ["$meetingTimes"],
-                lang: "js",
-              },
+                lang: "js"
+              }
             },
-            else: "$meetingTimes",
-          },
-        },
-      },
+            else: "$meetingTimes"
+          }
+        }
+      }
     });
   }
 
@@ -151,7 +158,7 @@ courses.get("/", async (c) => {
     const groupStage: Document = {
       _id: "$code",
       title: { $first: "$title" },
-      sections: { $push: "$$ROOT" },
+      sections: { $push: "$$ROOT" }
     };
 
     if (q) {
@@ -171,8 +178,8 @@ courses.get("/", async (c) => {
     pipeline.push({
       $facet: {
         results: [{ $skip: (page - 1) * limit }, { $limit: limit }],
-        total: [{ $count: "count" }],
-      },
+        total: [{ $count: "count" }]
+      }
     });
 
     const [result] = await collection.aggregate(pipeline).toArray();
@@ -184,15 +191,15 @@ courses.get("/", async (c) => {
       total,
       page,
       limit,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil(total / limit)
     });
   } else {
     // Original non-grouped behavior
     pipeline.push({
       $facet: {
         results: [{ $skip: (page - 1) * limit }, { $limit: limit }],
-        total: [{ $count: "count" }],
-      },
+        total: [{ $count: "count" }]
+      }
     });
 
     const [result] = await collection.aggregate(pipeline).toArray();
@@ -204,12 +211,12 @@ courses.get("/", async (c) => {
       total,
       page,
       limit,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil(total / limit)
     });
   }
 });
 
-courses.get("/:crn", async (c) => {
+courses.get("/:crn", async c => {
   const crn = c.req.param("crn");
   const collection = await getCoursesCollection();
   const doc = await collection.findOne({ crn });
@@ -218,7 +225,33 @@ courses.get("/:crn", async (c) => {
     return c.json({ error: "Course not found" }, 404);
   }
 
-  return c.json(parseCourse(doc as unknown as CourseDocument));
+  return c.json(parseCourse(doc));
+});
+
+courses.post("/bulk", async c => {
+  const body = await c.req.json();
+  if (!Array.isArray(body)) {
+    return c.json({ error: "body is not an array" }, 400);
+  }
+
+  const codes: string[] = [];
+  for (const code of body) {
+    if (typeof code !== "string") continue;
+    const match = code.match(/(?<department>[a-zA-Z]+)\s*(?<courseNumber>\d+)/);
+    if (!match?.groups) continue;
+    const { department, courseNumber } = match.groups;
+    if (!department || !courseNumber) continue;
+    codes.push(`${department.toUpperCase()} ${courseNumber}`);
+  }
+
+  if (!codes.length) {
+    return c.json({ error: "no valid course codes found" }, 400);
+  }
+
+  const collection = await getCoursesCollection();
+  const docs = await collection.find({ code: { $in: codes } });
+  const courses = await docs.map(doc => parseCourse(doc)).toArray();
+  return c.json(courses);
 });
 
 export default courses;

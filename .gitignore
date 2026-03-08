@@ -2,3 +2,5 @@ node_modules/
 dist/
 .env
 .turbo/
+__pycache__
+documents

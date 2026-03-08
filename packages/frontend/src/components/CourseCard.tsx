@@ -8,8 +8,8 @@ interface Props {
   scheduledCourses: Course[];
   wishlist: Course[];
   onAdd: (courses: Course[]) => void;
-  onWishlist: (course: Course) => void;
-  onReplaceSection?: (oldCrn: string, newCourse: Course) => void;
+  onAddToWishlist: (course: Course) => void;
+  onRemoveFromWishlist: (course: Course) => void;
 }
 
 export default function CourseCard({
@@ -17,18 +17,12 @@ export default function CourseCard({
   scheduledCourses,
   wishlist,
   onAdd,
-  onWishlist,
-  onReplaceSection,
+  onAddToWishlist,
+  onRemoveFromWishlist
 }: Props) {
   // Split sections into primaries and dependents
-  const primaries = useMemo(() => 
-    group.sections.filter(s => s.is_enroll_section === "1"),
-    [group.sections]
-  );
-  const dependents = useMemo(() => 
-    group.sections.filter(s => s.is_enroll_section === "0"),
-    [group.sections]
-  );
+  const primaries = useMemo(() => group.sections.filter(s => s.is_enroll_section === "1"), [group.sections]);
+  const dependents = useMemo(() => group.sections.filter(s => s.is_enroll_section === "0"), [group.sections]);
   const hasLinkedSections = dependents.length > 0;
 
   // Dropdown state
@@ -37,27 +31,23 @@ export default function CourseCard({
 
   // Find scheduled primary index
   const scheduledPrimaryIndex = useMemo(() => {
-    return primaries.findIndex((s) =>
-      scheduledCourses.some((c) => c.crn === s.crn)
-    );
+    return primaries.findIndex(s => scheduledCourses.some(c => c.crn === s.crn));
   }, [primaries, scheduledCourses]);
 
   // Find scheduled dependent index
   const scheduledDependentIndex = useMemo(() => {
-    return dependents.findIndex((s) =>
-      scheduledCourses.some((c) => c.crn === s.crn)
-    );
+    return dependents.findIndex(s => scheduledCourses.some(c => c.crn === s.crn));
   }, [dependents, scheduledCourses]);
 
   // Determine initial selected primary index
   const initialPrimaryIndex = useMemo(() => {
     // If any primary is already scheduled, select that
     if (scheduledPrimaryIndex >= 0) return scheduledPrimaryIndex;
-    
+
     // Otherwise default to first available primary
-    const availableIndex = primaries.findIndex((s) => s.stat === "A");
+    const availableIndex = primaries.findIndex(s => s.stat === "A");
     if (availableIndex >= 0) return availableIndex;
-    
+
     // Fall back to first primary
     return 0;
   }, [primaries, scheduledPrimaryIndex]);
@@ -117,11 +107,11 @@ export default function CourseCard({
         return linkedDependents.findIndex(d => d.crn === scheduledDep.crn);
       }
     }
-    
+
     // Otherwise default to first available linked dependent
-    const availableIndex = linkedDependents.findIndex((s) => s.stat === "A");
+    const availableIndex = linkedDependents.findIndex(s => s.stat === "A");
     if (availableIndex >= 0) return availableIndex;
-    
+
     // Fall back to first linked dependent
     return 0;
   }, [linkedDependents, scheduledDependentIndex, linkedCrns, dependents]);
@@ -144,28 +134,30 @@ export default function CourseCard({
   const dependentLabel = useMemo(() => {
     if (linkedDependents.length === 0) return "Section";
     const firstSchd = linkedDependents[0].schd;
-    return {
-      REC: "Recitation",
-      LAB: "Lab",
-      PRA: "Practicum",
-      SEM: "Seminar",
-    }[firstSchd] ?? "Section";
+    return (
+      {
+        REC: "Recitation",
+        LAB: "Lab",
+        PRA: "Practicum",
+        SEM: "Seminar"
+      }[firstSchd] ?? "Section"
+    );
   }, [linkedDependents]);
 
   // Conflict detection
   const primaryConflict = selectedPrimary ? hasConflict(selectedPrimary, scheduledCourses) : null;
-  const dependentConflict = selectedDependent && hasLinkedDependents ? hasConflict(selectedDependent, scheduledCourses) : null;
+  const dependentConflict =
+    selectedDependent && hasLinkedDependents ? hasConflict(selectedDependent, scheduledCourses) : null;
   const hasConflict_ = primaryConflict || dependentConflict;
 
   // Scheduled state
-  const isPrimaryScheduled = selectedPrimary ? scheduledCourses.some((c) => c.crn === selectedPrimary.crn) : false;
-  const isDependentScheduled = selectedDependent && hasLinkedDependents 
-    ? scheduledCourses.some((c) => c.crn === selectedDependent.crn) 
-    : false;
+  const isPrimaryScheduled = selectedPrimary ? scheduledCourses.some(c => c.crn === selectedPrimary.crn) : false;
+  const isDependentScheduled =
+    selectedDependent && hasLinkedDependents ? scheduledCourses.some(c => c.crn === selectedDependent.crn) : false;
   const isScheduled = isPrimaryScheduled || (hasLinkedDependents && isDependentScheduled);
 
   // Wishlist state (only for primary)
-  const isWishlisted = selectedPrimary ? wishlist.some((c) => c.crn === selectedPrimary.crn) : false;
+  const isWishlisted = selectedPrimary ? wishlist.some(c => c.crn === selectedPrimary.crn) : false;
 
   // Availability
   const primaryAvailable = selectedPrimary?.stat === "A";
@@ -225,9 +217,10 @@ export default function CourseCard({
       // Single section - just display inline
       return (
         <div className="mt-2">
-          <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">{label}</p>
           <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-500">
-            <span>{selected.schd} {selected.no}</span>
+            <span>
+              {selected.schd} {selected.no}
+            </span>
             <span>{selected.meets || "TBA"}</span>
             <span>{selected.instr || "TBA"}</span>
           </div>
@@ -237,7 +230,6 @@ export default function CourseCard({
 
     return (
       <div className="mt-2 relative">
-        <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1">{label}</p>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full flex items-center justify-between gap-2 px-2 py-1.5 text-[11px] text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md border border-gray-200 transition-colors"
@@ -249,7 +241,7 @@ export default function CourseCard({
         </button>
 
         {isOpen && (
-          <div className="absolute z-10 left-0 right-0 mt-1 bg-white rounded-lg border border-gray-200 shadow-lg max-h-[200px] overflow-y-auto">
+          <div className="absolute z-10 left-0 right-0 mt-1 bg-white rounded-lg border border-gray-200 shadow-lg max-h-50 overflow-y-auto">
             {sortedSections.map((section, idx) => {
               const isSelected = section.crn === selected.crn;
               const isAvailable = section.stat === "A";
@@ -272,15 +264,6 @@ export default function CourseCard({
                     </div>
                     <div className="text-gray-500 mt-0.5">{section.instr || "TBA"}</div>
                   </div>
-                  <span
-                    className={`shrink-0 text-[9px] font-medium px-1.5 py-0.5 rounded ${
-                      isAvailable
-                        ? "bg-emerald-50 text-emerald-700"
-                        : "bg-red-50 text-red-700"
-                    }`}
-                  >
-                    {isAvailable ? "Open" : "Full"}
-                  </span>
                 </button>
               );
             })}
@@ -292,7 +275,7 @@ export default function CourseCard({
 
   const handleAdd = () => {
     if (!selectedPrimary) return;
-    
+
     if (hasLinkedSections) {
       if (hasLinkedDependents && selectedDependent) {
         onAdd([selectedPrimary, selectedDependent]);
@@ -316,15 +299,6 @@ export default function CourseCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className="font-semibold text-sm text-gray-900 truncate">{group.code}</p>
-            <span
-              className={`shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded-full ${
-                available
-                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                  : "bg-red-50 text-red-700 border border-red-200"
-              }`}
-            >
-              {available ? "Open" : "Full"}
-            </span>
           </div>
           <p className="text-xs text-gray-600 mt-0.5 truncate">{group.title}</p>
         </div>
@@ -345,7 +319,7 @@ export default function CourseCard({
           )}
 
           {/* Dependent dropdown - only if primary has linked dependents */}
-          {hasLinkedDependents && (
+          {hasLinkedDependents &&
             renderDropdown(
               dependentLabel,
               linkedDependents,
@@ -355,8 +329,7 @@ export default function CourseCard({
               setDependentDropdownOpen,
               handleDependentSelect,
               hasMultipleDependents
-            )
-          )}
+            )}
         </>
       ) : (
         // No linked sections - single dropdown over all sections (all are primaries)
@@ -372,14 +345,10 @@ export default function CourseCard({
         )
       )}
 
-      {selectedPrimary?.credits && (
-        <div className="mt-1 text-[11px] text-gray-500">{selectedPrimary.credits} cr</div>
-      )}
+      {selectedPrimary?.credits && <div className="mt-1 text-[11px] text-gray-500">{selectedPrimary.credits} cr</div>}
 
       {primaryConflict && (
-        <p className="mt-1.5 text-[11px] text-red-600 font-medium">
-          Conflicts with {primaryConflict.code}
-        </p>
+        <p className="mt-1.5 text-[11px] text-red-600 font-medium">Conflicts with {primaryConflict.code}</p>
       )}
       {!primaryConflict && dependentConflict && (
         <p className="mt-1.5 text-[11px] text-red-600 font-medium">
@@ -392,27 +361,28 @@ export default function CourseCard({
           <button
             onClick={handleAdd}
             disabled={hasLinkedSections && hasLinkedDependents && !selectedDependent}
-            className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium rounded-md bg-amber-500 text-white hover:bg-amber-600 active:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium rounded-md bg-cu-gold text-white hover:bg-amber-600 active:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="w-3 h-3" />
             Add
           </button>
         )}
-        {isScheduled && (
-          <span className="text-[11px] text-amber-700 font-medium px-2.5 py-1">Scheduled</span>
-        )}
+        {isScheduled && <span className="text-[11px] text-amber-700 font-medium px-2.5 py-1">Scheduled</span>}
         {!isWishlisted && !isScheduled && (
           <button
-            onClick={() => onWishlist(selectedPrimary)}
+            onClick={() => onAddToWishlist(selectedPrimary)}
             className="flex items-center gap-1 px-2 py-1 text-[11px] text-gray-500 hover:text-rose-500 rounded-md hover:bg-rose-50 transition-colors"
           >
             <Heart className="w-3 h-3" />
           </button>
         )}
         {isWishlisted && (
-          <span className="flex items-center gap-1 px-2 py-1 text-[11px] text-rose-500">
+          <button
+            onClick={() => onRemoveFromWishlist(selectedPrimary)}
+            className="flex items-center gap-1 px-2 py-1 text-[11px] text-rose-500 hover:bg-rose-50 transition-colors"
+          >
             <Heart className="w-3 h-3 fill-current" />
-          </span>
+          </button>
         )}
       </div>
     </div>

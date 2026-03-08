@@ -51,7 +51,7 @@ export default function Sidebar({
   onRemoveCourse,
   onReplaceSection,
   onAddToWishlist,
-  onRemoveFromWishlist,
+  onRemoveFromWishlist
 }: Props) {
   const [conflictState, setConflictState] = useState<{
     courses: Course[];
@@ -111,15 +111,15 @@ export default function Sidebar({
             </div>
           )}
 
-          {results.map((group) => (
+          {results.map(group => (
             <CourseCard
               key={group.code}
               group={group}
               scheduledCourses={scheduledCourses}
               wishlist={wishlist}
-              onAdd={(courses) => handleAdd(courses)}
-              onWishlist={(course) => onAddToWishlist(course)}
-              onReplaceSection={onReplaceSection}
+              onAdd={courses => handleAdd(courses)}
+              onAddToWishlist={course => onAddToWishlist(course)}
+              onRemoveFromWishlist={course => onRemoveFromWishlist(course.crn)}
             />
           ))}
 
@@ -140,11 +140,7 @@ export default function Sidebar({
         <div className="border-t border-gray-200 mx-3" />
 
         <div className="p-3">
-          <WishlistPanel
-            items={wishlist}
-            onAddToSchedule={handleWishlistAdd}
-            onRemove={onRemoveFromWishlist}
-          />
+          <WishlistPanel items={wishlist} onAddToSchedule={handleWishlistAdd} onRemove={onRemoveFromWishlist} />
         </div>
       </div>
 

@@ -6,7 +6,7 @@ import pathlib
 import datetime
 import json
 
-#from toon import encode
+# from toon import encode
 
 # input schema
 # class: {
@@ -21,18 +21,24 @@ import json
 #
 #
 
+
 class Class(BaseModel):
     code: str = Field(description="Name code of class. (Ex: MATH2001)")
     section: str = Field(description="Section of the class. (Ex: 200)")
 
+
 class Schedule(BaseModel):
     classes: List[Class] = Field(description="A list of classes to reccomend.")
-    thoughts: str = Field(description="Comments describing the reasons for how the list was ordered.")
+    thoughts: str = Field(
+        description="Comments describing the reasons for how the list was ordered."
+    )
 
 
 client = genai.Client()
 
-filepath = pathlib.Path('./audits/audit_2026-03-07_17_07_58.0_Sat_Mar_07_17_08_04_MST_2026.pdf')
+# filepath = pathlib.Path(
+#    "./audits/audit_2026-03-07_17_07_58.0_Sat_Mar_07_17_08_04_MST_2026.pdf"
+# )
 
 prompt = f"""
 Take the input JSON file of specified classes and build a balanced schedule.
@@ -41,28 +47,33 @@ Some classes have required recitation or lab sections. Include these in the fina
 The user also has a preference described in the preference field. Take the user's input into account when generating your response.
 """
 
-st = datetime.datetime.now()
-print("start time: ", st)
 
-response = client.models.generate_content(
-    model="gemini-3-flash-preview",
-    contents=[
-        types.Part.from_bytes(
-            data=filepath.read_bytes(),
-            mime_type='application/json',
-        ),
-        prompt,
-    ],
-    config={
-        "response_mime_type": "application/json",
-        "response_json_schema": Schedule.model_json_schema(),
-    },
-)
+def build_schedule(file_id):
+    st = datetime.datetime.now()
+    print("start time: ", st)
 
+    filepath = pathlib.Path(f"./documents/{file_id}.md")
 
-class_list = Schedule.model_validate_json(response.text)
-print(class_list)
+    response = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=[
+            types.Part.from_bytes(
+                data=filepath.read_bytes(),
+                mime_type="application/json",
+            ),
+            prompt,
+        ],
+        config={
+            "response_mime_type": "application/json",
+            "response_json_schema": Schedule.model_json_schema(),
+        },
+    )
 
-et = datetime.datetime.now()
-print("end time: ", et)
-print("elapsed: ", et - st)
+    class_list = Schedule.model_validate_json(response.text)
+    print(class_list)
+
+    et = datetime.datetime.now()
+    print("end time: ", et)
+    print("elapsed: ", et - st)
+
+    return class_list

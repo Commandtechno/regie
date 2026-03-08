@@ -10,27 +10,27 @@ export function buildSearchStage(q: string): Document {
             autocomplete: {
               query: q,
               path: "code",
-              fuzzy: { maxEdits: 1 },
-            },
+              fuzzy: { maxEdits: 1 }
+            }
           },
           {
             autocomplete: {
               query: q,
               path: "title",
-              fuzzy: { maxEdits: 1 },
-            },
+              fuzzy: { maxEdits: 1 }
+            }
           },
           {
             text: {
               query: q,
               path: "instr",
-              fuzzy: { maxEdits: 1 },
-            },
-          },
+              fuzzy: { maxEdits: 1 }
+            }
+          }
         ],
-        minimumShouldMatch: 1,
-      },
-    },
+        minimumShouldMatch: 1
+      }
+    }
   };
 }
 
@@ -53,10 +53,7 @@ export function buildMatchStage(filters: {
   if (filters.level) {
     const levelRegex = `\\s${filters.level[0]}\\d{3}`;
     if (match.code) {
-      match.$and = [
-        { code: match.code },
-        { code: { $regex: levelRegex } },
-      ];
+      match.$and = [{ code: match.code }, { code: { $regex: levelRegex } }];
       delete match.code;
     } else {
       match.code = { $regex: levelRegex };
@@ -71,7 +68,7 @@ export function buildMatchStage(filters: {
     const timeConditions: Document[] = [];
 
     if (filters.days) {
-      const dayList = filters.days.split(",").map((d) => d.trim());
+      const dayList = filters.days.split(",").map(d => d.trim());
       timeConditions.push({
         $expr: {
           $gt: [
@@ -80,13 +77,13 @@ export function buildMatchStage(filters: {
                 $filter: {
                   input: { $ifNull: ["$_parsedMeetingTimes", []] },
                   as: "mt",
-                  cond: { $in: ["$$mt.meet_day", dayList] },
-                },
-              },
+                  cond: { $in: ["$$mt.meet_day", dayList] }
+                }
+              }
             },
-            0,
-          ],
-        },
+            0
+          ]
+        }
       });
     }
 
@@ -97,10 +94,10 @@ export function buildMatchStage(filters: {
             $map: {
               input: { $ifNull: ["$_parsedMeetingTimes", []] },
               as: "mt",
-              in: { $gte: [{ $toInt: "$$mt.start_time" }, parseInt(filters.startAfter)] },
-            },
-          },
-        },
+              in: { $gte: [{ $toInt: "$$mt.start_time" }, parseInt(filters.startAfter)] }
+            }
+          }
+        }
       });
     }
 
@@ -111,10 +108,10 @@ export function buildMatchStage(filters: {
             $map: {
               input: { $ifNull: ["$_parsedMeetingTimes", []] },
               as: "mt",
-              in: { $lte: [{ $toInt: "$$mt.end_time" }, parseInt(filters.endBefore)] },
-            },
-          },
-        },
+              in: { $lte: [{ $toInt: "$$mt.end_time" }, parseInt(filters.endBefore)] }
+            }
+          }
+        }
       });
     }
 
