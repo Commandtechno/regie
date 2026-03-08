@@ -119,6 +119,7 @@ export default function Sidebar({
               wishlist={wishlist}
               onAdd={(courses) => handleAdd(courses)}
               onWishlist={(course) => onAddToWishlist(course)}
+              onReplaceSection={onReplaceSection}
             />
           ))}
 
