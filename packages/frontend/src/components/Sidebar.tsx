@@ -25,6 +25,7 @@ interface Props {
   onAddCourse: (course: Course) => void;
   onAddToWishlist: (course: Course) => void;
   onRemoveFromWishlist: (crn: string) => void;
+  onPreviewCourses: (courses: Course[]) => void;
 }
 
 export default function Sidebar({
@@ -43,7 +44,8 @@ export default function Sidebar({
   wishlist,
   onAddCourse,
   onAddToWishlist,
-  onRemoveFromWishlist
+  onRemoveFromWishlist,
+  onPreviewCourses
 }: Props) {
   const [conflictState, setConflictState] = useState<{
     courses: Course[];
@@ -104,6 +106,7 @@ export default function Sidebar({
               onReplaceSection={undefined}
               onAddToWishlist={course => onAddToWishlist(course)}
               onRemoveFromWishlist={course => onRemoveFromWishlist(course.crn)}
+              onPreviewCourses={onPreviewCourses}
             />
           ))}
 

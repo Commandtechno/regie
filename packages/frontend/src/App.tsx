@@ -17,6 +17,7 @@ export default function App() {
   const { departments } = useDepartments();
   const { theme, toggle } = useTheme();
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [previewCourses, setPreviewCourses] = useState<Course[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [leftPanelOpen, setLeftPanelOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
@@ -90,7 +91,11 @@ export default function App() {
 
         {/* Center: calendar */}
         <div className="flex-1 p-3 overflow-hidden">
-          <Calendar courses={scheduler.scheduledCourses} onCourseClick={setSelectedCourse} />
+          <Calendar
+            courses={scheduler.scheduledCourses}
+            previewCourses={previewCourses}
+            onCourseClick={setSelectedCourse}
+          />
         </div>
 
         {/* Right panel: search */}
@@ -119,6 +124,7 @@ export default function App() {
             onAddCourse={scheduler.addCourse}
             onAddToWishlist={scheduler.addToWishlist}
             onRemoveFromWishlist={scheduler.removeFromWishlist}
+            onPreviewCourses={setPreviewCourses}
           />
         </div>
 

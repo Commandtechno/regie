@@ -8,9 +8,10 @@ interface Props {
   colorIndex: number;
   style: React.CSSProperties;
   onClick: () => void;
+  isPreview?: boolean;
 }
 
-export default function CalendarBlock({ course, colorIndex, style, onClick }: Props) {
+export default function CalendarBlock({ course, colorIndex, style, onClick, isPreview }: Props) {
   const [showTooltip, setShowTooltip] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const colorClass = getCourseColor(colorIndex);
@@ -18,6 +19,7 @@ export default function CalendarBlock({ course, colorIndex, style, onClick }: Pr
   const compact = height < 42;
 
   const handleMouseEnter = () => {
+    if (isPreview) return;
     timeoutRef.current = setTimeout(() => setShowTooltip(true), 400);
   };
 
@@ -52,7 +54,7 @@ export default function CalendarBlock({ course, colorIndex, style, onClick }: Pr
 
   return (
     <div
-      className={`absolute left-0.5 right-0.5 rounded cursor-pointer transition-shadow ${colorClass}`}
+      className={`absolute left-0.5 right-0.5 rounded cursor-pointer transition-shadow ${colorClass} ${isPreview ? "opacity-50 pointer-events-none" : ""}`}
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
